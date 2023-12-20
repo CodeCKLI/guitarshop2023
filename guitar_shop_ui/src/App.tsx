@@ -11,6 +11,7 @@ import { CssBaseline } from "@mui/material";
 import { LandingPage } from "./pages/LandingPage";
 import { ShopPage } from "./pages/ShopPage";
 import { CartPage } from "./pages/CartPage";
+import { UserInfoPage } from "./pages/UserInfoPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/detail" element={<DetailPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/user" element={<UserInfoPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

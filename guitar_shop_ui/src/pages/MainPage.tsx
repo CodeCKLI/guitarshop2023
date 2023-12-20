@@ -6,6 +6,7 @@ export const MainPage = () => {
     <div>
       <Navbar></Navbar>
       <Outlet />
+      Footer
     </div>
   );
 };
