@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // MUI
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
@@ -14,6 +16,8 @@ import Container from "@mui/material/Container";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export const UserInfoPage = () => {
+  const [tabs, setTabs] = useState("info");
+
   return (
     <Container>
       <Box sx={{ minHeight: "80vh" }}>
@@ -27,121 +31,317 @@ export const UserInfoPage = () => {
             alignItems: { xs: "center", md: "flex-start" },
           }}
         >
+          {/* Nav Paper */}
           <Paper
             sx={{
-              width: { xs: "80%", md: 300 },
-              height: { xs: 180, md: 200 },
+              width: { xs: "80%", md: "30%" },
+              minHeight: { xs: 180, md: 200 },
             }}
             elevation={10}
           >
-            <Stack
-              sx={{
-                direction: "colum",
-                justifyContent: "center",
-                alignItems: "center",
-                py: 2,
-                width: "100%",
-              }}
-            >
-              <Stack direction={"row"} sx={{ width: "80%" }}>
-                <List
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <ListItem>
-                    <SettingsIcon color="primary" sx={{ marginRight: 1 }} />
-                    <Typography>{"Manage account"}</Typography>
-                  </ListItem>
+            <Stack sx={{ width: "100%" }}>
+              <List>
+                {/* Paper Title */}
+                <ListItem>
+                  <SettingsIcon color="primary" sx={{ marginRight: 1 }} />
+                  <Typography>{"Manage account"}</Typography>
+                </ListItem>
 
-                  <Divider />
+                <Divider />
 
-                  <ListItem button>
-                    <Box sx={{ marginRight: 4 }}></Box>
-                    <Typography>{"Account details"}</Typography>
-                  </ListItem>
-                </List>
-              </Stack>
+                <ListItem>
+                  <Button
+                    sx={{ justifyContent: "flex-start" }}
+                    fullWidth
+                    variant="text"
+                    onClick={() => {
+                      setTabs("info");
+                    }}
+                  >
+                    <Typography>{"Account details"}</Typography>{" "}
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    sx={{ justifyContent: "flex-start" }}
+                    fullWidth
+                    variant="text"
+                    onClick={() => {
+                      setTabs("history");
+                    }}
+                  >
+                    <Typography>{"Order History"}</Typography>{" "}
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    sx={{ justifyContent: "flex-start" }}
+                    fullWidth
+                    variant="text"
+                    onClick={() => {
+                      setTabs("wish");
+                    }}
+                  >
+                    <Typography>{"Wish List"}</Typography>{" "}
+                  </Button>
+                </ListItem>
+              </List>
             </Stack>
           </Paper>
 
-          <Paper
-            sx={{
-              minWidth: { xs: "80%", md: 500 },
-              minHeight: { xs: 300, md: 400 },
-            }}
-            elevation={10}
-          >
-            <Stack
-              sx={{
-                direction: "colum",
-                justifyContent: "center",
-                alignItems: "center",
-                py: 2,
-                width: "100%",
-              }}
-            >
-              <Stack
-                sx={{ display: "flex", flexDirection: "row", width: "80%" }}
-              >
-                <SettingsIcon color="secondary" sx={{ marginRight: 1 }} />
-                <Typography>{"Manage account"}</Typography>
-              </Stack>
+          {/* Outlet Paper */}
 
-              <Stack
-                sx={{
-                  direction: "colum",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: "1rem",
-                  py: 4,
-                  width: "80%",
-                }}
-              >
-                <TextField
-                  id="user_name"
-                  label="User Name"
-                  name="user_name"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(
-                    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-                  ) => {
-                    console.log(e);
-                  }}
-                />
-                <TextField
-                  id="full_name"
-                  label="Full Name"
-                  name="full_name"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(
-                    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-                  ) => {
-                    console.log(e);
-                  }}
-                />
-                <TextField
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(
-                    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-                  ) => {
-                    console.log(e);
-                  }}
-                />
-                <Button variant="contained" fullWidth>
-                  Save
-                </Button>
-              </Stack>
-            </Stack>
-          </Paper>
+          {tabs == "info" ? <UserInfoPaper /> : null}
+          {tabs == "history" ? <OrderHistoryPaper /> : null}
+          {tabs == "wish" ? <WishListPaper /> : null}
         </Stack>
       </Box>
     </Container>
+  );
+};
+
+const UserInfoPaper = () => {
+  return (
+    <Stack
+      direction={"column"}
+      sx={{
+        minWidth: { xs: "80%", md: "60%" },
+        minHeight: { xs: 300, md: 400 },
+      }}
+      spacing={3}
+    >
+      {/* UserInfo */}
+      <Paper elevation={5}>
+        <Stack
+          sx={{
+            direction: "colum",
+            justifyContent: "center",
+            alignItems: "center",
+            py: 3,
+            width: "100%",
+          }}
+        >
+          <Stack sx={{ display: "flex", flexDirection: "row", width: "80%" }}>
+            <SettingsIcon color="secondary" sx={{ marginRight: 1 }} />
+            <Typography>{"Manage account"}</Typography>
+          </Stack>
+
+          <Stack
+            sx={{
+              direction: "colum",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "1rem",
+              py: 4,
+              width: "80%",
+            }}
+          >
+            <TextField
+              id="user_name"
+              label="User Name"
+              name="user_name"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
+              id="full_name"
+              label="Full Name"
+              name="full_name"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
+              id="email"
+              label="Email Address"
+              name="email"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <Button variant="contained" fullWidth>
+              Save
+            </Button>
+          </Stack>
+        </Stack>
+      </Paper>
+    </Stack>
+  );
+};
+
+const OrderHistoryPaper = () => {
+  return (
+    <Stack
+      direction={"column"}
+      sx={{
+        minWidth: { xs: "80%", md: "60%" },
+        minHeight: { xs: 300, md: 400 },
+      }}
+      spacing={3}
+    >
+      {/* Order History */}
+      <Paper elevation={5}>
+        <Stack
+          sx={{
+            direction: "colum",
+            justifyContent: "center",
+            alignItems: "center",
+            py: 3,
+            width: "100%",
+          }}
+        >
+          <Stack sx={{ display: "flex", flexDirection: "row", width: "80%" }}>
+            <SettingsIcon color="secondary" sx={{ marginRight: 1 }} />
+            <Typography>{"Order History"}</Typography>
+          </Stack>
+
+          <Stack
+            sx={{
+              direction: "colum",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "1rem",
+              py: 4,
+              width: "80%",
+            }}
+          >
+            <TextField
+              id="user_name"
+              label="User Name"
+              name="user_name"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
+              id="full_name"
+              label="Full Name"
+              name="full_name"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
+              id="email"
+              label="Email Address"
+              name="email"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <Button variant="contained" fullWidth>
+              Save
+            </Button>
+          </Stack>
+        </Stack>
+      </Paper>
+    </Stack>
+  );
+};
+
+const WishListPaper = () => {
+  return (
+    <Stack
+      direction={"column"}
+      sx={{
+        minWidth: { xs: "80%", md: "60%" },
+        minHeight: { xs: 300, md: 400 },
+      }}
+      spacing={3}
+    >
+      {/* Order History */}
+      <Paper elevation={5}>
+        <Stack
+          sx={{
+            direction: "colum",
+            justifyContent: "center",
+            alignItems: "center",
+            py: 3,
+            width: "100%",
+          }}
+        >
+          <Stack sx={{ display: "flex", flexDirection: "row", width: "80%" }}>
+            <SettingsIcon color="secondary" sx={{ marginRight: 1 }} />
+            <Typography>{"Wish List"}</Typography>
+          </Stack>
+
+          <Stack
+            sx={{
+              direction: "colum",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "1rem",
+              py: 4,
+              width: "80%",
+            }}
+          >
+            <TextField
+              id="user_name"
+              label="User Name"
+              name="user_name"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
+              id="full_name"
+              label="Full Name"
+              name="full_name"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
+              id="email"
+              label="Email Address"
+              name="email"
+              variant="outlined"
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <Button variant="contained" fullWidth>
+              Save
+            </Button>
+          </Stack>
+        </Stack>
+      </Paper>
+    </Stack>
   );
 };

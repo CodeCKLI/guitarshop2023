@@ -24,7 +24,7 @@ import { deepPurple } from "@mui/material/colors";
 // React Router
 import { Link } from "react-router-dom";
 
-const pages = ["Shop", "About", "Contact"];
+const pages = ["Shop", "About"];
 const userInfo = {
   name: "Dicky",
 };
@@ -161,7 +161,10 @@ export const Navbar = () => {
             </Typography>
           </Stack>
 
-          <Button color="secondary" onClick={() => setIsLogIn(!isLogIn)}>
+          <Button
+            sx={{ color: "whitesmoke" }}
+            onClick={() => setIsLogIn(!isLogIn)}
+          >
             Login
           </Button>
 
