@@ -8,13 +8,14 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import Container from "@mui/material/Container";
 
 // Icons
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export const UserInfoPage = () => {
   return (
-    <>
+    <Container>
       <Box sx={{ minHeight: "80vh" }}>
         <Stack
           sx={{
@@ -133,12 +134,14 @@ export const UserInfoPage = () => {
                     console.log(e);
                   }}
                 />
-                <Button fullWidth>Save</Button>
+                <Button variant="contained" fullWidth>
+                  Save
+                </Button>
               </Stack>
             </Stack>
           </Paper>
         </Stack>
       </Box>
-    </>
+    </Container>
   );
 };

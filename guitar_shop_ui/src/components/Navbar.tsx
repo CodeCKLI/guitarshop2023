@@ -176,16 +176,17 @@ export const Navbar = () => {
               </Link>
             ) : (
               <Link style={{ textDecoration: "none" }} to={"/login"}>
-                <Button sx={{ color: "whitesmoke" }} size="large">
+                <IconButton sx={{ color: "whitesmoke" }} size="large">
                   <AccountCircleIcon />
-                </Button>
+                </IconButton>
               </Link>
             )}
 
             <Link style={{ textDecoration: "none" }} to={"/cart"}>
-              <Button sx={{ color: "whitesmoke" }} size="large">
+              <IconButton sx={{ color: "whitesmoke" }} size="large">
                 <ShoppingBagIcon />
-              </Button>
+                <Typography>1</Typography>
+              </IconButton>
             </Link>
           </Stack>
         </Toolbar>

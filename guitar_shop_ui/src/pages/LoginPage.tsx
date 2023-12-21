@@ -70,7 +70,6 @@ export const LoginPage = () => {
                   console.log(e);
                 }}
                 required
-                autoFocus
               />
               <TextField
                 name="password"
