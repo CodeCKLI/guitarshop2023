@@ -16,22 +16,24 @@ type guitarType = {
   guitar_brand: string;
   guitar_description: string;
   guitar_price: number;
-  guitar_picture: string;
   guitar_model: string;
+  guitar_cover_URL: string;
 };
 
 export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
   return (
     <div>
       <Box
-        padding={5}
+        padding={2}
+        marginBottom={10}
         sx={{
+          maxHeight: "100%",
           alignItems: "center",
           justifyContent: "center",
           display: "flex",
         }}
       >
-        <Card elevation={4}>
+        <Card sx={{ padding: 1 }} elevation={4}>
           <CardHeader
             action={
               <Box>
@@ -46,16 +48,18 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
             title={guitar.guitar_brand}
             subheader={guitar.guitar_model}
           ></CardHeader>
+
           <CardMedia
-            component="img"
-            width={"100%"}
-            image={guitar.guitar_picture}
-          />
+            component={"img"}
+            image={guitar.guitar_cover_URL}
+          ></CardMedia>
+
           <CardContent>
             <Typography variant="body2" color="text.secondary">
               {guitar.guitar_description}
             </Typography>
           </CardContent>
+
           <CardActions disableSpacing>
             <Button href="/details" fullWidth variant="contained">
               Details
