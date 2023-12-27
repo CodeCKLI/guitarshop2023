@@ -14,11 +14,11 @@ import java.util.List;
 public class GuitarDTO {
 
     private Long id;
-    private String guitar_model;
-    private String guitar_brand;
-    private String guitar_description;
-    private String guitar_cover_URL;
-    private Double guitar_price;
-    private List<String> guitar_colors;
+    private String model;
+    private String brand;
+    private String description;
+    private String cover_URL;
+    private Double price;
+    private List<String> colors;
 
 }

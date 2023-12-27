@@ -13,27 +13,18 @@ import Button from "@mui/material/Button";
 
 type guitarType = {
   id: number;
-  guitar_brand: string;
-  guitar_description: string;
-  guitar_price: number;
-  guitar_model: string;
-  guitar_cover_URL: string;
+  brand: string;
+  description: string;
+  price: number;
+  model: string;
+  cover_URL: string;
 };
 
 export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
   return (
     <div>
-      <Box
-        padding={2}
-        marginBottom={10}
-        sx={{
-          maxHeight: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-        }}
-      >
-        <Card sx={{ padding: 1 }} elevation={4}>
+      <Box padding={5} marginBottom={10}>
+        <Card sx={{ padding: 2 }} elevation={4}>
           <CardHeader
             action={
               <Box>
@@ -45,18 +36,18 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
                 </IconButton>
               </Box>
             }
-            title={guitar.guitar_brand}
-            subheader={guitar.guitar_model}
+            title={guitar.brand}
+            subheader={guitar.model}
           ></CardHeader>
 
-          <CardMedia
-            component={"img"}
-            image={guitar.guitar_cover_URL}
-          ></CardMedia>
+          <CardMedia component={"img"} image={guitar.cover_URL}></CardMedia>
 
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-              {guitar.guitar_description}
+              {guitar.description}
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
+              {guitar.price}
             </Typography>
           </CardContent>
 

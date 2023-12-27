@@ -119,13 +119,7 @@ const MenuButton = styled(BaseMenuButton)(
   `
 );
 
-const createHandleMenuClick = (menuItem: string) => {
-  return () => {
-    console.log(`Clicked on ${menuItem}`);
-  };
-};
-
-export const DropDownM = () => {
+export const DropDownMenu = ({ handleSortChaneg }: any) => {
   return (
     <>
       <Dropdown>
@@ -136,17 +130,19 @@ export const DropDownM = () => {
           </Stack>
         </MenuButton>
         <Menu slots={{ listbox: Listbox }}>
-          <MenuItem onClick={createHandleMenuClick("relevant")}>
-            Most Relevant
+          <MenuItem
+            onClick={() => {
+              handleSortChaneg("price", "dec");
+            }}
+          >
+            {"Sort by Price (High to Low)"}
           </MenuItem>
-          <MenuItem onClick={createHandleMenuClick("recent")}>
-            Most Recent
-          </MenuItem>
-          <MenuItem onClick={createHandleMenuClick("price")}>
-            Sort by Price
-          </MenuItem>
-          <MenuItem onClick={createHandleMenuClick("date")}>
-            Sort by Date
+          <MenuItem
+            onClick={() => {
+              handleSortChaneg("price", "aec");
+            }}
+          >
+            {"Sort by Price (Low to High)"}
           </MenuItem>
         </Menu>
       </Dropdown>
