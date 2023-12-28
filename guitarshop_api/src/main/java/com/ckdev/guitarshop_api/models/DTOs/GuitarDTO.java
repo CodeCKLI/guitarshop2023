@@ -19,6 +19,8 @@ public class GuitarDTO {
     private String description;
     private String cover_URL;
     private Double price;
-    private List<String> colors;
+    private List<String> colorOptions;
+    private List<String> pictures;
+    private String bodyColor;
 
 }

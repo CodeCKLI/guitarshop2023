@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -127,6 +126,11 @@ public class GuitarServiceImpl implements GuitarService {
                         return  guitarRepo.findByPriceLessThan(9999.00, paging);
                     }
                 }
+
+                if(price.isBlank() && brand.isBlank()){
+                    return guitarRepo.findAll(paging);
+                }
+
             } else {
                 Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
@@ -157,19 +161,24 @@ public class GuitarServiceImpl implements GuitarService {
                         return  guitarRepo.findByPriceLessThan(9999.00, paging);
                     }
                 }
+
+                if(price.isBlank() && brand.isBlank()){
+                    return guitarRepo.findAll(paging);
+                }
             }
-
-
         }
 
         return null;
-
-
     }
 
     @Override
-    public Optional<GuitarEntity> getOneGuitar(Long id) {
+    public Optional<GuitarEntity> getOneGuitarByID(Long id) {
         return guitarRepo.findById(id);
+    }
+
+    @Override
+    public List<GuitarEntity> getGuitarByModel(String model) {
+        return guitarRepo.findByModel(model);
     }
 
 

@@ -1,3 +1,7 @@
+import { useState, useContext } from "react";
+
+import { CartItemContext } from "../pages/MainPage";
+
 // MUI
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -10,6 +14,17 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+
+// React Router
+import { Link } from "react-router-dom";
+
+// Helper
+import { saveObj } from "../helpers/SessionHelpers";
 
 type guitarType = {
   id: number;
@@ -18,9 +33,38 @@ type guitarType = {
   price: number;
   model: string;
   cover_URL: string;
+  bodyColor: string;
 };
 
 export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
+  const [open, setOpen] = useState(false);
+
+  const { updateCartNumber }: { updateCartNumber: any } =
+    useContext(CartItemContext);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAddBagBTN = () => {
+    const CartItem = {
+      model: guitar?.model,
+      color: guitar?.bodyColor,
+      amount: 1,
+      price: guitar?.price,
+      coverURL: guitar?.cover_URL,
+    };
+    saveObj("cartItems", CartItem);
+
+    updateCartNumber();
+
+    setOpen(true);
+  };
+
   return (
     <div>
       <Box padding={5} marginBottom={10}>
@@ -31,7 +75,7 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
                 <IconButton>
                   <FavoriteIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={handleAddBagBTN}>
                   <AddShoppingCartIcon />
                 </IconButton>
               </Box>
@@ -49,15 +93,38 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
             <Typography variant="h6" color="text.secondary">
               {guitar.price}
             </Typography>
+            <Typography variant="h6" color="text.secondary">
+              {guitar.bodyColor}
+            </Typography>
           </CardContent>
 
-          <CardActions disableSpacing>
-            <Button href="/details" fullWidth variant="contained">
-              Details
-            </Button>
+          <CardActions>
+            <Link
+              to="/details"
+              style={{ width: "100%" }}
+              state={{ guitarId: guitar.id }}
+            >
+              <Button fullWidth variant="contained">
+                Details
+              </Button>
+            </Link>
           </CardActions>
         </Card>
       </Box>
+
+      {/* Dialog */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Item has been added to cart
+          </DialogContentText>
+        </DialogContent>
+        <Stack direction={"row"} justifyContent={"center"}>
+          <Button fullWidth onClick={handleClose}>
+            Ok
+          </Button>
+        </Stack>
+      </Dialog>
     </div>
   );
 };

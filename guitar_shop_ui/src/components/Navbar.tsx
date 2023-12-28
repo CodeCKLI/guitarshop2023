@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { CartItemContext } from "../pages/MainPage";
 
 // MUI
 import {
@@ -33,6 +35,12 @@ export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isLogIn, setIsLogIn] = useState(false);
 
+  const {
+    cartItemNumber,
+    updateCartNumber,
+  }: { cartItemNumber: any; updateCartNumber: any } =
+    useContext(CartItemContext);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -40,6 +48,10 @@ export const Navbar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  useEffect(() => {
+    updateCartNumber();
+  }, []);
 
   return (
     <>
@@ -188,7 +200,7 @@ export const Navbar = () => {
             <Link style={{ textDecoration: "none" }} to={"/cart"}>
               <IconButton sx={{ color: "whitesmoke" }} size="large">
                 <ShoppingBagIcon />
-                <Typography>1</Typography>
+                <Typography>{cartItemNumber}</Typography>
               </IconButton>
             </Link>
           </Stack>

@@ -22,8 +22,8 @@ import { ItemCard } from "../components/ItemCard";
 import { DropDownMenu } from "../components/DropDownMenu";
 import { LoadingCard } from "../components/loadingCard";
 
+// Database Actions
 import { findAllGuitars } from "../helpers/DBHelpers";
-import { text } from "stream/consumers";
 
 export const ShopPage = () => {
   const [guitars, setGuitars] = useState<any[]>([]);
@@ -148,8 +148,9 @@ export const ShopPage = () => {
                       onClick={() => {
                         setBrand("");
                         setPrice("");
+                        setIsFilter(false);
                       }}
-                      variant="test"
+                      variant="contained"
                     >
                       Reset
                     </Button>

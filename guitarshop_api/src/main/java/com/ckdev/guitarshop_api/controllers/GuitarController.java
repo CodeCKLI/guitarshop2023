@@ -8,6 +8,9 @@ import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @Log
 public class GuitarController {
@@ -37,18 +40,17 @@ public class GuitarController {
                                             @RequestParam(defaultValue = "") String brand,
                                             @RequestParam(defaultValue = "") String price
     ){
-
-        log.info(String.valueOf(pageNo));
-        log.info(String.valueOf(pageSize));
-        log.info(String.valueOf(isSort));
-        log.info(String.valueOf(sortBy));
-        log.info(String.valueOf(dir));
-        log.info(String.valueOf(isFilter));
-        log.info(String.valueOf(brand));
-        log.info(String.valueOf(price));
-
-
         return guitarServiceObj.getAllGuitars(pageNo, pageSize, isSort, sortBy, dir, isFilter, brand, price);
+    }
+
+    @GetMapping(path = "/guitar")
+    public Optional<GuitarEntity> getOneGuitarByID(@RequestParam Long guitarID ){
+        return guitarServiceObj.getOneGuitarByID(guitarID);
+    }
+
+    @GetMapping(path = "/guitarbyModel")
+    public List<GuitarEntity> getOneGuitarByModelName(@RequestParam String model){
+        return guitarServiceObj.getGuitarByModel((model));
     }
 
 }

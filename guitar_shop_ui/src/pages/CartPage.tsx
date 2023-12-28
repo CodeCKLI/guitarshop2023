@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // MUI
 import Divider from "@mui/material/Divider";
@@ -16,6 +16,10 @@ import CloseIcon from "@mui/icons-material/Close";
 export const CartPage = () => {
   const [value, setValue] = useState(1);
 
+  const handleCheckOutBTN = () => {};
+
+  useEffect(() => {}, []);
+
   return (
     <>
       <Container>
@@ -26,6 +30,7 @@ export const CartPage = () => {
           spacing={2}
           py={10}
         >
+          {/* Items display */}
           <Stack
             direction={"column"}
             divider={<Divider orientation="horizontal" flexItem />}
@@ -81,6 +86,7 @@ export const CartPage = () => {
             </Stack>
           </Stack>
 
+          {/* Order Summary */}
           <Stack
             direction={"column"}
             divider={<Divider orientation="horizontal" flexItem />}
@@ -98,7 +104,7 @@ export const CartPage = () => {
               <Typography>Totla: </Typography>
               <Typography>$899.00 USD</Typography>
             </Stack>
-            <Button href="/checkout" fullWidth variant="contained">
+            <Button onClick={handleCheckOutBTN} fullWidth variant="contained">
               Check Out
             </Button>
           </Stack>

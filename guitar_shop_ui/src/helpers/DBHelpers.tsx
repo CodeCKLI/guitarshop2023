@@ -20,11 +20,6 @@ export const findAllGuitars = async (
   brand: string,
   price: string
 ) => {
-  console.log(
-    `${HOST}:${PORT}/guitars?pageNo=${
-      page - 1
-    }&pageSize=10&isSort=${isSort}&sortBy=${sortBy}&dir=${sortOrder}&isFilter=${isFilter}&brand=${brand}&price=${price}`
-  );
   const response = await fetch(
     `${HOST}:${PORT}/guitars?pageNo=${
       page - 1
@@ -33,5 +28,17 @@ export const findAllGuitars = async (
 
   const data = await response.json();
 
+  return data;
+};
+
+export const findGuitarByID = async (guitarID: number) => {
+  const response = await fetch(`${HOST}:${PORT}/guitar?guitarID=${guitarID}`);
+  const data = await response.json();
+  return data;
+};
+
+export const findGuitarByModel = async (model: string) => {
+  const response = await fetch(`${HOST}:${PORT}/guitarbyModel?model=${model}`);
+  const data = await response.json();
   return data;
 };

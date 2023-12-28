@@ -23,7 +23,9 @@ public interface GuitarService {
                                      String price);
 
 
+    Optional<GuitarEntity> getOneGuitarByID(Long id);
 
-    Optional<GuitarEntity> getOneGuitar(Long id);
+    List<GuitarEntity> getGuitarByModel(String model);
+
 
 }
