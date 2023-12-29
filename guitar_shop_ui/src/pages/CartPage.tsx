@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { guitarProp } from "../Types/GuitarType";
+
 // MUI
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
@@ -7,18 +9,44 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 // Icon
 import CloseIcon from "@mui/icons-material/Close";
 
 export const CartPage = () => {
-  const [value, setValue] = useState(1);
+  const [guitars, setGuitars]: any = useState([]);
+  const [total, setTotal]: any = useState(0);
 
   const handleCheckOutBTN = () => {};
 
-  useEffect(() => {}, []);
+  const getGuitars = () => {
+    const guitarsStr = sessionStorage.getItem("cartItems");
+
+    if (guitarsStr != null) {
+      const guitarsArr = JSON.parse(guitarsStr);
+      console.log(guitarsArr);
+
+      const totalCost = guitarsArr.reduce(
+        (accumulator: number, currentProduct: any) => {
+          return accumulator + currentProduct.price * currentProduct.amount;
+        },
+        0
+      );
+
+      setTotal(Number(totalCost).toFixed(2));
+
+      setGuitars(guitarsArr);
+    }
+  };
+
+  useEffect(() => {
+    getGuitars();
+  }, []);
 
   return (
     <>
@@ -31,79 +59,153 @@ export const CartPage = () => {
           py={10}
         >
           {/* Items display */}
-          <Stack
-            direction={"column"}
-            divider={<Divider orientation="horizontal" flexItem />}
-            width={"100%"}
-            spacing={3}
-          >
+          <Stack direction={"column"} width={"100%"} spacing={3}>
             <Typography variant="h4">Shopping Cart</Typography>
-            <Stack
-              width={"90%"}
-              direction={"row"}
-              justifyContent={"space-between"}
-              alignSelf={"center"}
-            >
-              <Box
-                onClick={(e) => {
-                  console.log(e.target);
-                }}
-                component="img"
-                sx={{ maxHeight: 120 }}
-                src="https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/413uPcI9fEL._AC_SX679_.jpg"
-              />
-              <Stack direction={"column"}>
-                <Typography variant="h5">Fender Stract</Typography>
-                <Typography>G387FX2F0</Typography>
-                <Typography>Black</Typography>
-                <Typography color={"gray"}>No add-ons</Typography>
-              </Stack>
-              <Box>
-                <TextField
-                  size="small"
-                  id="amount"
-                  label="amount"
-                  type="number"
-                  value={value}
-                  InputProps={{
-                    inputProps: { min: 1 },
-                  }}
-                  onChange={(e) => {
-                    setValue(Number(e.target.value));
-                  }}
-                />
-              </Box>
-              <Typography>$899.00 USD</Typography>
-              <Box sx={{ maxHeight: "10" }}>
-                <IconButton>
-                  <CloseIcon />
-                </IconButton>
-              </Box>
-            </Stack>
-            <Stack direction={"row"}>
+
+            <Divider orientation="horizontal" flexItem />
+
+            {/* Item cards */}
+
+            {guitars.map(
+              (guitar: {
+                id: number;
+                model: string;
+                brand: string;
+                description: string;
+                coverURL: string;
+                price: number;
+                colorOptions: string[];
+                pictures: string[];
+                bodyColor: string;
+                amount: number;
+              }) => {
+                return (
+                  <Stack
+                    key={guitar.id}
+                    width={"90%"}
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    alignSelf={"center"}
+                  >
+                    <Box
+                      onClick={(e) => {}}
+                      component="img"
+                      sx={{ maxWidth: 150 }}
+                      src={guitar?.coverURL}
+                    />
+                    <Stack direction={"column"} width={"50%"}>
+                      <Typography variant="h6">{guitar?.model}</Typography>
+                      <Typography>{guitar?.brand}</Typography>
+                      <Typography>{guitar?.bodyColor}</Typography>
+                      <Typography variant="h6">
+                        {guitar?.price * guitar.amount}
+                      </Typography>
+                    </Stack>
+
+                    <Stack direction={"column"} spacing={2}>
+                      <Box>
+                        <FormControl fullWidth>
+                          <InputLabel id="qty">Qty:</InputLabel>
+                          <Select
+                            labelId="qty"
+                            id="qty"
+                            value={String(guitar?.amount)}
+                            label="Qty"
+                            onChange={(e: any) => {
+                              const found = guitars.filter((item: any) => {
+                                if (item.id == guitar.id) {
+                                  return (item.amount = e.target.value);
+                                }
+                              });
+                              const jsonObject = JSON.stringify(guitars);
+
+                              sessionStorage.setItem("cartItems", jsonObject);
+                              getGuitars();
+                            }}
+                          >
+                            {[...Array(10)].map((e, i) => (
+                              <MenuItem key={i} value={i + 1}>
+                                {i + 1}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </Stack>
+
+                    <Box sx={{ maxHeight: "10" }}>
+                      <IconButton
+                        onClick={() => {
+                          const index = guitars.indexOf(guitar);
+                          if (index > -1) {
+                            guitars.splice(index, 1);
+                          }
+                          const guitarsJSON = JSON.stringify(guitars);
+                          sessionStorage.setItem("cartItems", guitarsJSON);
+                          getGuitars();
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </Box>
+                  </Stack>
+                );
+              }
+            )}
+
+            {/* <Stack direction={"row"}>
               <Button>Coupon Code?</Button>
               <Button>Special Request?</Button>
-            </Stack>
+            </Stack> */}
           </Stack>
 
           {/* Order Summary */}
           <Stack
             direction={"column"}
-            divider={<Divider orientation="horizontal" flexItem />}
             width={{ xs: "100%", md: "50%" }}
             spacing={3}
           >
             <Typography variant="h4">Order Summary</Typography>
-            <Stack direction={"column"}>
-              <Stack direction={"row"} justifyContent={"space-between"}>
-                <Typography>Breakdown: fender</Typography>
-                <Typography>$899.00 USD</Typography>
-              </Stack>
-            </Stack>
+
+            <Divider orientation="horizontal" flexItem />
+
+            {guitars.map(
+              (guitar: {
+                id: number;
+                model: string;
+                brand: string;
+                description: string;
+                coverURL: string;
+                price: number;
+                colorOptions: string[];
+                pictures: string[];
+                bodyColor: string;
+                amount: number;
+              }) => {
+                return (
+                  <Stack key={guitar.id} direction={"column"}>
+                    <Stack direction={"row"} justifyContent={"space-between"}>
+                      <Stack direction={"column"}>
+                        <Typography>{guitar.model}</Typography>
+                        <Typography>{guitar.bodyColor}</Typography>
+                      </Stack>
+                      <Typography>
+                        {Number(guitar.price * guitar.amount).toFixed(2)}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                );
+              }
+            )}
+
             <Stack direction={"row"} justifyContent={"space-between"}>
-              <Typography>Totla: </Typography>
-              <Typography>$899.00 USD</Typography>
+              <Typography>Total: </Typography>
+              <Typography>
+                {total}
+                USD
+              </Typography>
             </Stack>
+
             <Button onClick={handleCheckOutBTN} fullWidth variant="contained">
               Check Out
             </Button>

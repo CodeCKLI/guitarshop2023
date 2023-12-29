@@ -52,11 +52,13 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
 
   const handleAddBagBTN = () => {
     const CartItem = {
+      id: guitar?.id,
       model: guitar?.model,
-      color: guitar?.bodyColor,
+      bodyColor: guitar?.bodyColor,
       amount: 1,
       price: guitar?.price,
       coverURL: guitar?.cover_URL,
+      brand: guitar?.brand,
     };
     saveObj("cartItems", CartItem);
 

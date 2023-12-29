@@ -105,10 +105,11 @@ export const DetailPage = () => {
     const CartItem = {
       id: guitarData?.id,
       model: guitarData?.model,
-      color: guitarData?.bodyColor,
+      bodyColor: guitarData?.bodyColor,
       amount: 1,
       price: guitarData?.price,
       coverURL: guitarData?.cover_URL,
+      brand: guitarData?.brand,
     };
 
     saveObj("cartItems", CartItem);
