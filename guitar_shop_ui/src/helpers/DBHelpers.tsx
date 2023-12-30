@@ -21,7 +21,7 @@ export const findAllGuitars = async (
   price: string
 ) => {
   const response = await fetch(
-    `${HOST}:${PORT}/public/guitars?pageNo=${
+    `${HOST}:${PORT}/api/public/guitars?pageNo=${
       page - 1
     }&pageSize=10&isSort=${isSort}&sortBy=${sortBy}&dir=${sortOrder}&isFilter=${isFilter}&brand=${brand}&price=${price}`
   );
@@ -33,7 +33,7 @@ export const findAllGuitars = async (
 
 export const findGuitarByID = async (guitarID: number) => {
   const response = await fetch(
-    `${HOST}:${PORT}/public/guitar?guitarID=${guitarID}`
+    `${HOST}:${PORT}/api/public/guitar?guitarID=${guitarID}`
   );
   const data = await response.json();
   return data;
@@ -41,7 +41,7 @@ export const findGuitarByID = async (guitarID: number) => {
 
 export const findGuitarByModel = async (model: string) => {
   const response = await fetch(
-    `${HOST}:${PORT}/public/guitarbyModel?model=${model}`
+    `${HOST}:${PORT}/api/public/guitarbyModel?model=${model}`
   );
   const data = await response.json();
   return data;

@@ -10,7 +10,15 @@ spring:
       ddl-auto: create-drop
   datasource:
     platform: postgres
-    url: "jdbc:postgresql://dpg-clajgrunt67s738ngk30-a.oregon-postgres.render.com:5432/guitar_shop_db"
+    url: "jdbc:postgresql://dpg-clajgrunt67s738ngk30-a.oregon-postgres.render.com:5432/guitar_shop_db" # 90 days
     username: ticket_app_f5o4_user
     password: 7sSwpZA9J3Ws95MFddHuFNIbDutVWjtl
     driverClassName: org.postgresql.Driver
+
+application:
+  security:
+    jwt:
+      secret-key: 874B21DDE682D59F8C562913217C55B953D0B6DA1DF67CD44C1045DB6DCA77AB #Random
+      expiration: 86400000 # One day
+      refresh-token:
+        expiration: 604800000 # 7 days
