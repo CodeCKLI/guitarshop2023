@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
-import { guitarProp } from "../Types/GuitarType";
+import { CartItemContext } from "../pages/MainPage";
 
 // MUI
 import Divider from "@mui/material/Divider";
@@ -21,6 +21,9 @@ import CloseIcon from "@mui/icons-material/Close";
 export const CartPage = () => {
   const [guitars, setGuitars]: any = useState([]);
   const [total, setTotal]: any = useState(0);
+
+  const { updateCartNumber }: { updateCartNumber: any } =
+    useContext(CartItemContext);
 
   const handleCheckOutBTN = () => {};
 
@@ -142,6 +145,7 @@ export const CartPage = () => {
                           const guitarsJSON = JSON.stringify(guitars);
                           sessionStorage.setItem("cartItems", guitarsJSON);
                           getGuitars();
+                          updateCartNumber();
                         }}
                       >
                         <CloseIcon />
@@ -151,11 +155,6 @@ export const CartPage = () => {
                 );
               }
             )}
-
-            {/* <Stack direction={"row"}>
-              <Button>Coupon Code?</Button>
-              <Button>Special Request?</Button>
-            </Stack> */}
           </Stack>
 
           {/* Order Summary */}
