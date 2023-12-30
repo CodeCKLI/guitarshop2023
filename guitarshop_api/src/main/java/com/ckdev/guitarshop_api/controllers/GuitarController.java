@@ -23,14 +23,14 @@ public class GuitarController {
         this.guitarMapperObj = guitarMapper;
     }
 
-    @PostMapping(path = "/guitars")
+    @PostMapping(path = "/public/guitars")
     public GuitarDTO createGuitar(@RequestBody GuitarDTO guitar) {
         GuitarEntity guitarentity = guitarMapperObj.mapToEntity(guitar);
         GuitarEntity savedGuitarEntity = guitarServiceObj.createGuitar(guitarentity);
         return guitarMapperObj.mapToDTO(savedGuitarEntity);
     }
 
-    @GetMapping(path = "/guitars")
+    @GetMapping(path = "/public/guitars")
     public Page<GuitarEntity> getAllGuitars(@RequestParam(defaultValue = "0") Integer pageNo,
                                             @RequestParam(defaultValue = "10") Integer pageSize,
                                             @RequestParam(defaultValue = "false") boolean isSort,
@@ -43,12 +43,12 @@ public class GuitarController {
         return guitarServiceObj.getAllGuitars(pageNo, pageSize, isSort, sortBy, dir, isFilter, brand, price);
     }
 
-    @GetMapping(path = "/guitar")
+    @GetMapping(path = "/public/guitar")
     public Optional<GuitarEntity> getOneGuitarByID(@RequestParam Long guitarID ){
         return guitarServiceObj.getOneGuitarByID(guitarID);
     }
 
-    @GetMapping(path = "/guitarbyModel")
+    @GetMapping(path = "/public/guitarbyModel")
     public List<GuitarEntity> getOneGuitarByModelName(@RequestParam String model){
         return guitarServiceObj.getGuitarByModel((model));
     }

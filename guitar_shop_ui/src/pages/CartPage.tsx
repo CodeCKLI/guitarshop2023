@@ -29,7 +29,6 @@ export const CartPage = () => {
 
     if (guitarsStr != null) {
       const guitarsArr = JSON.parse(guitarsStr);
-      console.log(guitarsArr);
 
       const totalCost = guitarsArr.reduce(
         (accumulator: number, currentProduct: any) => {
