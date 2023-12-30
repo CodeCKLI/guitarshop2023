@@ -67,93 +67,98 @@ export const CartPage = () => {
             <Divider orientation="horizontal" flexItem />
 
             {/* Item cards */}
+            {guitars.length > 0 ? (
+              guitars.map(
+                (guitar: {
+                  id: number;
+                  model: string;
+                  brand: string;
+                  description: string;
+                  coverURL: string;
+                  price: number;
+                  colorOptions: string[];
+                  pictures: string[];
+                  bodyColor: string;
+                  amount: number;
+                }) => {
+                  return (
+                    <Stack
+                      key={guitar.id}
+                      width={"90%"}
+                      direction={"row"}
+                      justifyContent={"space-between"}
+                      alignSelf={"center"}
+                    >
+                      <Box
+                        onClick={(e) => {}}
+                        component="img"
+                        sx={{ maxWidth: 150 }}
+                        src={guitar?.coverURL}
+                      />
+                      <Stack direction={"column"} width={"50%"}>
+                        <Typography variant="h6">{guitar?.model}</Typography>
+                        <Typography>{guitar?.brand}</Typography>
+                        <Typography>{guitar?.bodyColor}</Typography>
+                        <Typography variant="h6">
+                          {guitar?.price * guitar.amount}
+                        </Typography>
+                      </Stack>
 
-            {guitars.map(
-              (guitar: {
-                id: number;
-                model: string;
-                brand: string;
-                description: string;
-                coverURL: string;
-                price: number;
-                colorOptions: string[];
-                pictures: string[];
-                bodyColor: string;
-                amount: number;
-              }) => {
-                return (
-                  <Stack
-                    key={guitar.id}
-                    width={"90%"}
-                    direction={"row"}
-                    justifyContent={"space-between"}
-                    alignSelf={"center"}
-                  >
-                    <Box
-                      onClick={(e) => {}}
-                      component="img"
-                      sx={{ maxWidth: 150 }}
-                      src={guitar?.coverURL}
-                    />
-                    <Stack direction={"column"} width={"50%"}>
-                      <Typography variant="h6">{guitar?.model}</Typography>
-                      <Typography>{guitar?.brand}</Typography>
-                      <Typography>{guitar?.bodyColor}</Typography>
-                      <Typography variant="h6">
-                        {guitar?.price * guitar.amount}
-                      </Typography>
-                    </Stack>
+                      <Stack direction={"column"} spacing={2}>
+                        <Box>
+                          <FormControl fullWidth>
+                            <InputLabel id="qty">Qty:</InputLabel>
+                            <Select
+                              labelId="qty"
+                              id="qty"
+                              value={String(guitar?.amount)}
+                              label="Qty"
+                              onChange={(e: any) => {
+                                const found = guitars.filter((item: any) => {
+                                  if (item.id == guitar.id) {
+                                    return (item.amount = e.target.value);
+                                  }
+                                });
+                                const jsonObject = JSON.stringify(guitars);
 
-                    <Stack direction={"column"} spacing={2}>
-                      <Box>
-                        <FormControl fullWidth>
-                          <InputLabel id="qty">Qty:</InputLabel>
-                          <Select
-                            labelId="qty"
-                            id="qty"
-                            value={String(guitar?.amount)}
-                            label="Qty"
-                            onChange={(e: any) => {
-                              const found = guitars.filter((item: any) => {
-                                if (item.id == guitar.id) {
-                                  return (item.amount = e.target.value);
-                                }
-                              });
-                              const jsonObject = JSON.stringify(guitars);
+                                sessionStorage.setItem("cartItems", jsonObject);
+                                getGuitars();
+                              }}
+                            >
+                              {[...Array(10)].map((e, i) => (
+                                <MenuItem key={i} value={i + 1}>
+                                  {i + 1}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Box>
+                      </Stack>
 
-                              sessionStorage.setItem("cartItems", jsonObject);
-                              getGuitars();
-                            }}
-                          >
-                            {[...Array(10)].map((e, i) => (
-                              <MenuItem key={i} value={i + 1}>
-                                {i + 1}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                      <Box sx={{ maxHeight: "10" }}>
+                        <IconButton
+                          onClick={() => {
+                            const index = guitars.indexOf(guitar);
+                            if (index > -1) {
+                              guitars.splice(index, 1);
+                            }
+                            const guitarsJSON = JSON.stringify(guitars);
+                            sessionStorage.setItem("cartItems", guitarsJSON);
+                            getGuitars();
+                            updateCartNumber();
+                          }}
+                        >
+                          <CloseIcon />
+                        </IconButton>
                       </Box>
                     </Stack>
-
-                    <Box sx={{ maxHeight: "10" }}>
-                      <IconButton
-                        onClick={() => {
-                          const index = guitars.indexOf(guitar);
-                          if (index > -1) {
-                            guitars.splice(index, 1);
-                          }
-                          const guitarsJSON = JSON.stringify(guitars);
-                          sessionStorage.setItem("cartItems", guitarsJSON);
-                          getGuitars();
-                          updateCartNumber();
-                        }}
-                      >
-                        <CloseIcon />
-                      </IconButton>
-                    </Box>
-                  </Stack>
-                );
-              }
+                  );
+                }
+              )
+            ) : (
+              <Stack direction={"row"} justifyContent={"center"}>
+                <Typography>{"<No items in cart>"}</Typography>
+              </Stack>
             )}
           </Stack>
 
