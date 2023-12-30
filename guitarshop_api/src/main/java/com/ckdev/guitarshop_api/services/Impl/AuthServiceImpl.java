@@ -25,6 +25,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+
+        var isUserExist = userRepository.findByEmail(request.getEmail());
+
+        if(!isUserExist.isEmpty()){
+            return AuthenticationResponse.builder()
+                    .accessToken(null)
+                    .isSuccess(false)
+//                .refreshToken(refreshToken)
+                    .build();
+        }
+
         var user = UserEntity.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -37,6 +48,7 @@ public class AuthServiceImpl implements AuthService {
 //        saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
+                .isSuccess(true)
 //                .refreshToken(refreshToken)
                 .build();
     }
@@ -58,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
 //        saveUserToken(user, jwtToken);
 
         return AuthenticationResponse.builder()
+                .isSuccess(true)
                 .accessToken(jwtToken)
 //                .refreshToken(refreshToken)
                 .build();
