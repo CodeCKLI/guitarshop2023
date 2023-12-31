@@ -272,7 +272,7 @@ export const ShopPage = () => {
               </Stack>
 
               {/* Item Grid */}
-              <Grid container justifyContent={"center"}>
+              <Grid paddingX={5} container>
                 {guitars.length == 0 ? (
                   <Stack py={5}>
                     <Typography variant="h6">No guitar is found</Typography>

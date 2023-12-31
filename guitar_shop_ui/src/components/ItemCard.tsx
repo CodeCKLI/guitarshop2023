@@ -69,8 +69,8 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
 
   return (
     <div>
-      <Box padding={5} marginBottom={10}>
-        <Card sx={{ padding: 2 }} elevation={4}>
+      <Box padding={2}>
+        <Card elevation={4}>
           <CardHeader
             action={
               <Box>
@@ -86,7 +86,11 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
             subheader={guitar.model}
           ></CardHeader>
 
-          <CardMedia component={"img"} image={guitar.cover_URL}></CardMedia>
+          <CardMedia
+            sx={{ height: "300px", paddingX: 2 }}
+            component={"img"}
+            image={guitar.cover_URL}
+          ></CardMedia>
 
           <CardContent>
             <Typography variant="body2" color="text.secondary">
