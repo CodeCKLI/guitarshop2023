@@ -15,8 +15,17 @@ import Container from "@mui/material/Container";
 // Icons
 import SettingsIcon from "@mui/icons-material/Settings";
 
+import { useNavigate } from "react-router-dom";
+
+// React cookie
+import { useCookies } from "react-cookie";
+
 export const UserInfoPage = () => {
   const [tabs, setTabs] = useState("info");
+
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
+
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -83,6 +92,20 @@ export const UserInfoPage = () => {
                     }}
                   >
                     <Typography>{"Wish List"}</Typography>{" "}
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    sx={{ justifyContent: "flex-start" }}
+                    fullWidth
+                    variant="text"
+                    onClick={() => {
+                      removeCookie("jwt");
+                      removeCookie("isLoggedIn");
+                      navigate("/shop");
+                    }}
+                  >
+                    <Typography>{"Logout"}</Typography>{" "}
                   </Button>
                 </ListItem>
               </List>

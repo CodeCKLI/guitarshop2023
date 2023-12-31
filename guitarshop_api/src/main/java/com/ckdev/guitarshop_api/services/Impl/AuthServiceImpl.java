@@ -42,8 +42,10 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
+
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
+
 //        var refreshToken = jwtService.generateRefreshToken(user);
 //        saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()

@@ -5,9 +5,11 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 
 export const CartItemContext: any = createContext(0);
+export const NavLogInContext: any = createContext(false);
 
 export const MainPage = () => {
   const [cartItemNumber, setCartItemNumber] = useState(0);
+  const [isNavLoggedIn, setIsNavLoggedIn] = useState(false);
 
   const updateCartNumber = () => {
     const sumCartItems = sessionStorage.getItem("cartItems");
@@ -23,9 +25,11 @@ export const MainPage = () => {
       <CartItemContext.Provider
         value={{ cartItemNumber, setCartItemNumber, updateCartNumber }}
       >
-        <Navbar></Navbar>
-        <Outlet />
-        <Footer></Footer>
+        <NavLogInContext.Provider value={{ isNavLoggedIn, setIsNavLoggedIn }}>
+          <Navbar></Navbar>
+          <Outlet />
+          <Footer></Footer>
+        </NavLogInContext.Provider>
       </CartItemContext.Provider>
     </div>
   );

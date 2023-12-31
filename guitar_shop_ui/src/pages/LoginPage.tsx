@@ -12,11 +12,74 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // React Router
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+// From helper
+import { userSignin, authenticateUser } from "../helpers/DBHelpers";
+
+// React cookie
+import { useCookies } from "react-cookie";
 
 export const LoginPage = () => {
   const [alertmsg, setAlertmsg] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
+
+  const [isLoginPage, setIsLoginPage] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
+
+  const navigate = useNavigate();
+
+  const onSignInBTNClicked = async () => {
+    if (email == "" || password == "" || firstName == "" || lastName == "") {
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await userSignin(firstName, lastName, email, password);
+    console.log(result);
+
+    setLoading(false);
+
+    if (result.success) {
+      setAlertmsg(`User ${firstName} ${lastName} is created`);
+      setCookie("isLoggedIn", true);
+      setCookie("jwt", result.access_token);
+    } else {
+      setCookie("isLoggedIn", false);
+      setAlertmsg(`Invaild SignIn e.g.User exist`);
+    }
+  };
+
+  const onLoginBTNClicked = async () => {
+    if (email == "" || password == "") {
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await authenticateUser(email, password);
+    console.log(result);
+
+    setLoading(false);
+
+    if (result.success) {
+      setAlertmsg(`Welcome Back! ${email}`);
+      setCookie("isLoggedIn", true);
+      setCookie("jwt", result.access_token);
+
+      navigate("/user");
+    } else {
+      setCookie("isLoggedIn", false);
+      setAlertmsg(`Invaild SignIn e.g.User exist`);
+    }
+  };
 
   return (
     <>
@@ -31,7 +94,7 @@ export const LoginPage = () => {
           <Paper
             sx={{
               minWidth: { xs: 350, md: 400 },
-              minHeight: { xs: 350, md: 400 },
+              minHeight: { xs: 400, md: 500 },
             }}
             elevation={10}
           >
@@ -41,7 +104,7 @@ export const LoginPage = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                minHeight: "325px",
+                minHeight: "450px",
                 width: "100%",
               }}
             >
@@ -50,7 +113,7 @@ export const LoginPage = () => {
                   onClick={() => {
                     setAlertmsg("");
                   }}
-                  sx={{ mt: 2, mb: 2, width: "75%" }}
+                  sx={{ width: "75%" }}
                   severity="warning"
                 >
                   {alertmsg}
@@ -63,11 +126,12 @@ export const LoginPage = () => {
                 name="email"
                 autoComplete="email"
                 variant="standard"
+                value={email}
                 sx={{ mt: 2, width: "70%" }}
                 onChange={(
                   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
                 ) => {
-                  console.log(e);
+                  setEmail(e.target.value);
                 }}
                 required
               />
@@ -78,15 +142,16 @@ export const LoginPage = () => {
                 id="password"
                 autoComplete="current-password"
                 variant="standard"
+                value={password}
                 sx={{ width: "70%" }}
                 onChange={(
                   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
                 ) => {
-                  console.log(e);
+                  setPassword(e.target.value);
                 }}
                 required
               />
-              {isLogin ? (
+              {isLoginPage ? (
                 <Box sx={{ width: "70%" }}>
                   <Typography variant="body2" align="center" sx={{ my: 3 }}>
                     {"Don't have an account? "}
@@ -94,7 +159,7 @@ export const LoginPage = () => {
                       to={""}
                       onClick={() => {
                         setAlertmsg("");
-                        setIsLogin(false);
+                        setIsLoginPage(false);
                       }}
                     >
                       Sign up
@@ -115,22 +180,52 @@ export const LoginPage = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    onClick={() => {
-                      setLoading(!loading);
-                    }}
+                    onClick={onLoginBTNClicked}
                   >
                     Login
                   </LoadingButton>
                 </Box>
               ) : (
-                <Box sx={{ width: "70%" }}>
+                <Box sx={{ width: "100%" }}>
+                  <TextField
+                    id="firstname"
+                    label="First Name"
+                    name="firstname"
+                    variant="standard"
+                    value={firstName}
+                    sx={{ width: "70%" }}
+                    onChange={(
+                      e: React.ChangeEvent<
+                        HTMLInputElement | HTMLTextAreaElement
+                      >
+                    ) => {
+                      setFirstName(e.target.value);
+                    }}
+                    required
+                  />
+                  <TextField
+                    name="lastname"
+                    label="Last Name"
+                    id="lastname"
+                    variant="standard"
+                    value={lastName}
+                    sx={{ width: "70%" }}
+                    onChange={(
+                      e: React.ChangeEvent<
+                        HTMLInputElement | HTMLTextAreaElement
+                      >
+                    ) => {
+                      setLastName(e.target.value);
+                    }}
+                    required
+                  />
                   <Typography variant="body2" align="center" sx={{ my: 3 }}>
                     {"Already have an account? "}
                     <Link
                       to={""}
                       onClick={() => {
                         setAlertmsg("");
-                        setIsLogin(true);
+                        setIsLoginPage(true);
                       }}
                     >
                       Login
@@ -138,22 +233,11 @@ export const LoginPage = () => {
                   </Typography>
                   <LoadingButton
                     loading={loading}
-                    loadingIndicator={
-                      <Stack
-                        direction={"row"}
-                        spacing={2}
-                        alignItems={"center"}
-                      >
-                        <Typography> Verifiying </Typography>
-                        <CircularProgress color="inherit" size={16} />
-                      </Stack>
-                    }
                     type="submit"
                     fullWidth
                     variant="contained"
-                    onClick={() => {
-                      setLoading(!loading);
-                    }}
+                    sx={{ width: "70%" }}
+                    onClick={onSignInBTNClicked}
                   >
                     Sign In
                   </LoadingButton>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 
-import { CartItemContext } from "../pages/MainPage";
+import { CartItemContext, NavLogInContext } from "../pages/MainPage";
 
 // MUI
 import {
@@ -26,6 +26,9 @@ import { deepPurple } from "@mui/material/colors";
 // React Router
 import { Link } from "react-router-dom";
 
+// React cookie
+import { useCookies } from "react-cookie";
+
 const pages = ["Shop", "About"];
 const userInfo = {
   name: "Dicky",
@@ -33,13 +36,20 @@ const userInfo = {
 
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [isLogIn, setIsLogIn] = useState(false);
+
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
 
   const {
     cartItemNumber,
     updateCartNumber,
   }: { cartItemNumber: any; updateCartNumber: any } =
     useContext(CartItemContext);
+
+  const {
+    isNavLoggedIn,
+    setIsNavLoggedIn,
+  }: { isNavLoggedIn: any; setIsNavLoggedIn: any } =
+    useContext(NavLogInContext);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -49,8 +59,13 @@ export const Navbar = () => {
     setAnchorElNav(null);
   };
 
+  const initLoginState = () => {
+    setIsNavLoggedIn(cookies.isLoggedIn);
+  };
+
   useEffect(() => {
     updateCartNumber();
+    initLoginState();
   }, []);
 
   return (
@@ -173,15 +188,8 @@ export const Navbar = () => {
             </Typography>
           </Stack>
 
-          <Button
-            sx={{ color: "whitesmoke" }}
-            onClick={() => setIsLogIn(!isLogIn)}
-          >
-            Login
-          </Button>
-
           <Stack alignItems={"center"} direction={"row"}>
-            {isLogIn ? (
+            {isNavLoggedIn ? (
               <Link style={{ textDecoration: "none" }} to={"/user"}>
                 <Button sx={{ color: "whitesmoke" }} size="large">
                   <Avatar sx={{ bgcolor: deepPurple[500] }}>
