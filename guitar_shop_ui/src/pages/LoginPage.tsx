@@ -23,7 +23,7 @@ import { useCookies } from "react-cookie";
 export const LoginPage = () => {
   const [alertmsg, setAlertmsg] = useState("");
 
-  const [isLoginPage, setIsLoginPage] = useState(false);
+  const [isLoginPage, setIsLoginPage] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -94,7 +94,7 @@ export const LoginPage = () => {
           <Paper
             sx={{
               minWidth: { xs: 350, md: 400 },
-              minHeight: { xs: 400, md: 500 },
+              minHeight: { xs: 400, md: 300 },
             }}
             elevation={10}
           >
@@ -104,8 +104,9 @@ export const LoginPage = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                minHeight: "450px",
+                minHeight: "300px",
                 width: "100%",
+                paddingY: 5,
               }}
             >
               {alertmsg !== "" ? (

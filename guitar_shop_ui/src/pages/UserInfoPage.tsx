@@ -102,7 +102,7 @@ export const UserInfoPage = () => {
                     onClick={() => {
                       removeCookie("jwt");
                       removeCookie("isLoggedIn");
-                      navigate("/shop");
+                      navigate("/login");
                     }}
                   >
                     <Typography>{"Logout"}</Typography>{" "}
