@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { NavLogInContext } from "../pages/MainPage";
 
 // MUI
 import Box from "@mui/material/Box";
@@ -21,6 +23,9 @@ import { userSignin, authenticateUser } from "../helpers/DBHelpers";
 import { useCookies } from "react-cookie";
 
 export const LoginPage = () => {
+  const { setIsNavLoggedIn }: { isNavLoggedIn: any; setIsNavLoggedIn: any } =
+    useContext(NavLogInContext);
+
   const [alertmsg, setAlertmsg] = useState("");
 
   const [isLoginPage, setIsLoginPage] = useState(true);
@@ -51,6 +56,8 @@ export const LoginPage = () => {
       setAlertmsg(`User ${firstName} ${lastName} is created`);
       setCookie("isLoggedIn", true);
       setCookie("jwt", result.access_token);
+
+      setIsNavLoggedIn(true);
     } else {
       setCookie("isLoggedIn", false);
       setAlertmsg(`Invaild SignIn e.g.User exist`);
@@ -73,6 +80,8 @@ export const LoginPage = () => {
       setAlertmsg(`Welcome Back! ${email}`);
       setCookie("isLoggedIn", true);
       setCookie("jwt", result.access_token);
+
+      setIsNavLoggedIn(true);
 
       navigate("/user");
     } else {

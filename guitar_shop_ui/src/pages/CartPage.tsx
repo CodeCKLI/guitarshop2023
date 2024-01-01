@@ -15,6 +15,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+// React Router
+import { Link } from "react-router-dom";
+
 // Icon
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -24,8 +27,6 @@ export const CartPage = () => {
 
   const { updateCartNumber }: { updateCartNumber: any } =
     useContext(CartItemContext);
-
-  const handleCheckOutBTN = () => {};
 
   const getGuitars = () => {
     const guitarsStr = sessionStorage.getItem("cartItems");
@@ -188,12 +189,20 @@ export const CartPage = () => {
                 return (
                   <Stack key={guitar.id} direction={"column"}>
                     <Stack direction={"row"} justifyContent={"space-between"}>
-                      <Stack direction={"column"}>
+                      <Stack direction={"column"} sx={{ width: "70%" }}>
                         <Typography>{guitar.model}</Typography>
                         <Typography>{guitar.bodyColor}</Typography>
                       </Stack>
-                      <Typography>
-                        {Number(guitar.price * guitar.amount).toFixed(2)}
+                      <Typography
+                        sx={{
+                          width: "30%",
+                          display: "flex",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        {`${Number(guitar.price * guitar.amount).toFixed(
+                          2
+                        )} USD`}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -202,16 +211,24 @@ export const CartPage = () => {
             )}
 
             <Stack direction={"row"} justifyContent={"space-between"}>
-              <Typography>Total: </Typography>
-              <Typography>
-                {total}
-                USD
+              <Typography variant="h5" sx={{ width: "60%" }}>
+                Total:{" "}
               </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  width: "40%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >{`${total} USD`}</Typography>
             </Stack>
 
-            <Button onClick={handleCheckOutBTN} fullWidth variant="contained">
-              Check Out
-            </Button>
+            <Link to={"/checkout"} style={{ textDecoration: "none" }}>
+              <Button fullWidth variant="contained">
+                Process to CheckOut
+              </Button>
+            </Link>
           </Stack>
         </Stack>
       </Container>

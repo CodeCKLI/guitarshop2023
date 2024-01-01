@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { NavLogInContext } from "../pages/MainPage";
 
 // MUI
 import Divider from "@mui/material/Divider";
@@ -26,6 +27,18 @@ export const UserInfoPage = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
 
   const navigate = useNavigate();
+
+  const {
+    isNavLoggedIn,
+    setIsNavLoggedIn,
+  }: { isNavLoggedIn: any; setIsNavLoggedIn: any } =
+    useContext(NavLogInContext);
+
+  useEffect(() => {
+    if (!isNavLoggedIn) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <Container>
@@ -102,10 +115,13 @@ export const UserInfoPage = () => {
                     onClick={() => {
                       removeCookie("jwt");
                       removeCookie("isLoggedIn");
+
+                      setIsNavLoggedIn(false);
+
                       navigate("/login");
                     }}
                   >
-                    <Typography>{"Logout"}</Typography>{" "}
+                    <Typography>{"Logout"}</Typography>
                   </Button>
                 </ListItem>
               </List>
