@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
@@ -16,7 +17,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Entity
 @Table(name = "appuser")
-public class UserEntity implements UserDetails {
+public class AppUserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -25,6 +26,9 @@ public class UserEntity implements UserDetails {
     private String lastname;
     private String email;
     private String password;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appuser", cascade = CascadeType.ALL)
+    private List<OrderEntity> orderList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

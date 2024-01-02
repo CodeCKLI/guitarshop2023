@@ -3,11 +3,9 @@ package com.ckdev.guitarshop_api.services.Impl;
 import com.ckdev.guitarshop_api.controllers.Types.AuthenticationRequest;
 import com.ckdev.guitarshop_api.controllers.Types.AuthenticationResponse;
 import com.ckdev.guitarshop_api.controllers.Types.RegisterRequest;
-import com.ckdev.guitarshop_api.models.Entities.UserEntity;
-import com.ckdev.guitarshop_api.repositories.UserRepo;
+import com.ckdev.guitarshop_api.models.Entities.AppUserEntity;
+import com.ckdev.guitarshop_api.repositories.AppUserRepo;
 import com.ckdev.guitarshop_api.services.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserRepo userRepository;
+    private final AppUserRepo appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTServiceImpl jwtService;
     private final AuthenticationManager authManager;
@@ -26,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
 
-        var isUserExist = userRepository.findByEmail(request.getEmail());
+        var isUserExist = appUserRepository.findByEmail(request.getEmail());
 
         if(!isUserExist.isEmpty()){
             return AuthenticationResponse.builder()
@@ -36,14 +34,14 @@ public class AuthServiceImpl implements AuthService {
                     .build();
         }
 
-        var user = UserEntity.builder()
+        var user = AppUserEntity.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        var savedUser = userRepository.save(user);
+        var savedUser = appUserRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
 
 //        var refreshToken = jwtService.generateRefreshToken(user);
@@ -64,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
+        var user = appUserRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 //        var refreshToken = jwtService.generateRefreshToken(user);

@@ -1,6 +1,8 @@
 package com.ckdev.guitarshop_api;
 
+import com.ckdev.guitarshop_api.models.Entities.AppUserEntity;
 import com.ckdev.guitarshop_api.models.Entities.GuitarEntity;
+import com.ckdev.guitarshop_api.repositories.AppUserRepo;
 import com.ckdev.guitarshop_api.repositories.GuitarRepo;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
@@ -17,11 +19,13 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 
 	private final DataSource dataSource;
 	private final GuitarRepo guitarRepoObj;
+	private final AppUserRepo appuserRepoObj;
 
 
-    public GuitarshopApiApplication(DataSource dataSource, GuitarRepo guitarRepo) {
+    public GuitarshopApiApplication(DataSource dataSource, GuitarRepo guitarRepo, AppUserRepo appuserRepo) {
         this.dataSource = dataSource;
 		this.guitarRepoObj = guitarRepo;
+		this.appuserRepoObj = appuserRepo;
     }
 
     public static void main(String[] args) {
@@ -83,10 +87,19 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 				.bodyColor("grey")
 				.build();
 
+		AppUserEntity appuserOne = AppUserEntity.builder()
+				.email("test@email.com")
+				.firstname("Test")
+				.lastname("Testing")
+				.password("abc")
+				.build();
+
 		guitarRepoObj.save(guitarA);
 		guitarRepoObj.save(guitarB);
 		guitarRepoObj.save(guitarC);
 		guitarRepoObj.save(guitarD);
+
+		appuserRepoObj.save(appuserOne);
 
 
 	}
