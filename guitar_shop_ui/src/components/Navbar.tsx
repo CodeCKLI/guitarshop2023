@@ -28,16 +28,18 @@ import { Link } from "react-router-dom";
 
 // React cookie
 import { useCookies } from "react-cookie";
+import { Cookie } from "@mui/icons-material";
 
 const pages = ["Shop", "About"];
-const userInfo = {
-  name: "Dicky",
-};
 
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "jwt",
+    "isLoggedIn",
+    "userName",
+  ]);
 
   const {
     cartItemNumber,
@@ -193,7 +195,7 @@ export const Navbar = () => {
               <Link style={{ textDecoration: "none" }} to={"/user"}>
                 <Button sx={{ color: "whitesmoke" }} size="large">
                   <Avatar sx={{ bgcolor: deepPurple[500] }}>
-                    {userInfo.name[0]}
+                    {cookies.userName[0]}
                   </Avatar>
                 </Button>
               </Link>

@@ -17,6 +17,8 @@ public class AuthenticationResponse {
     
     private boolean isSuccess;
 
+    private String userName;
+
 //    @JsonProperty("refresh_token")
 //    private String refreshToken;
 }

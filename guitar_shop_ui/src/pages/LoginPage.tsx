@@ -36,7 +36,11 @@ export const LoginPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "jwt",
+    "isLoggedIn",
+    "userName",
+  ]);
 
   const navigate = useNavigate();
 
@@ -56,6 +60,7 @@ export const LoginPage = () => {
       setAlertmsg(`User ${firstName} ${lastName} is created`);
       setCookie("isLoggedIn", true);
       setCookie("jwt", result.access_token);
+      setCookie("userName", result.userName);
 
       setIsNavLoggedIn(true);
     } else {
@@ -80,6 +85,7 @@ export const LoginPage = () => {
       setAlertmsg(`Welcome Back! ${email}`);
       setCookie("isLoggedIn", true);
       setCookie("jwt", result.access_token);
+      setCookie("userName", result.userName);
 
       setIsNavLoggedIn(true);
 
