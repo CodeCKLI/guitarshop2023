@@ -15,4 +15,6 @@ public class OrderResponse {
     @JsonProperty("isSuccess")
     private boolean isSuccess;
 
+    private Long orderID;
+
 }

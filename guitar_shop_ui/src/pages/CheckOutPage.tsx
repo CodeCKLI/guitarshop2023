@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 
-import { NavLogInContext } from "../pages/MainPage";
+import { NavLogInContext, CartItemContext } from "../pages/MainPage";
 
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
@@ -24,13 +24,20 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+// React cookie
+import { useCookies } from "react-cookie";
+
 import { useNavigate } from "react-router-dom";
+
+import { ceateOrder } from "../helpers/DBHelpers";
 
 export const CheckOutPage = () => {
   const [guitars, setGuitars]: any = useState([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal]: any = useState(0);
   const [tax, setTax] = useState(0);
+  const [dialogText, setDialogText] = useState("");
+  const [shipping, setShipping] = useState(5.0);
 
   const [isShowInfo, setIsShowInfo] = useState("flex");
   const [isShowShip, setIsShowShip] = useState("none");
@@ -51,13 +58,26 @@ export const CheckOutPage = () => {
   const [city, setCity] = useState("");
   const [postal, setPostal] = useState("");
 
-  const [method, setMethod] = useState("");
+  const [method, setMethod] = useState("visa");
   const [cardNumber, setCardNumber] = useState("");
   const [cardcsv, setCardcsv] = useState("");
 
   const [open, setOpen] = useState(false);
 
   const { isNavLoggedIn }: { isNavLoggedIn: any } = useContext(NavLogInContext);
+  const {
+    cartItemNumber,
+    setCartItemNumber,
+    updateCartNumber,
+  }: { cartItemNumber: any; setCartItemNumber: any; updateCartNumber: any } =
+    useContext(CartItemContext);
+
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "jwt",
+    "isLoggedIn",
+    "userName",
+    "userID",
+  ]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -95,7 +115,75 @@ export const CheckOutPage = () => {
 
   const navigate = useNavigate();
 
-  const handleConfirmClicked = () => {};
+  const handleConfirmClicked = async () => {
+    setLoading(true);
+
+    const userID = cookies.userID;
+
+    console.log(userID);
+
+    if (userID != null) {
+      const result: any = await ceateOrder(
+        email,
+        Fname,
+        Lname,
+        phone,
+        country,
+        address,
+        city,
+        postal,
+        method,
+        cardNumber,
+        cardcsv,
+        Number(userID),
+        "Penning",
+        JSON.stringify(guitars),
+        Number(tax.toFixed(2)),
+        shipping,
+        total
+      );
+      console.log(result);
+
+      sessionStorage.removeItem("cartItems");
+
+      updateCartNumber();
+
+      setDialogText(`Order ID ${result.orderID} is placed succesfully! Please check your email
+      or user order page if you have logged in`);
+    } else {
+      const result: any = await ceateOrder(
+        email,
+        Fname,
+        Lname,
+        phone,
+        country,
+        address,
+        city,
+        postal,
+        method,
+        cardNumber,
+        cardcsv,
+        undefined,
+        "Penning",
+        JSON.stringify(guitars),
+        Number(tax.toFixed(2)),
+        shipping,
+        total
+      );
+      console.log(result);
+
+      sessionStorage.removeItem("cartItems");
+
+      updateCartNumber();
+
+      setDialogText(`Order ID ${result.orderID} is placed succesfully! Please check your email
+      or user order page if you have logged in`);
+    }
+
+    setTimeout(() => {
+      setOpen(true);
+    }, 3000);
+  };
 
   useEffect(() => {
     getGuitars();
@@ -405,12 +493,7 @@ export const CheckOutPage = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                onClick={() => {
-                  setLoading(true);
-                  setTimeout(() => {
-                    setOpen(true);
-                  }, 3000);
-                }}
+                onClick={handleConfirmClicked}
               >
                 Confirm Order
               </LoadingButton>
@@ -489,8 +572,7 @@ export const CheckOutPage = () => {
             <DialogTitle id="alert-dialog-title">{"Order Status"}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Order is placed! Please check your email or user order page if
-                you have logged in
+                {dialogText}
               </DialogContentText>
             </DialogContent>
             <DialogActions>

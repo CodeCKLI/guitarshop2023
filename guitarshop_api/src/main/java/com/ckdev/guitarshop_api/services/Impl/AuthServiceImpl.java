@@ -50,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(jwtToken)
                 .isSuccess(true)
                 .userName(savedUser.getFirstname())
+                .userID(savedUser.getId())
 //                .refreshToken(refreshToken)
                 .build();
     }
@@ -74,6 +75,7 @@ public class AuthServiceImpl implements AuthService {
                 .isSuccess(true)
                 .accessToken(jwtToken)
                 .userName(user.getFirstname())
+                .userID(user.getId())
 //                .refreshToken(refreshToken)
                 .build();
     }

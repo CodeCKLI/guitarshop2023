@@ -95,3 +95,75 @@ export const userSignin = async (
     return error;
   }
 };
+
+export const ceateOrder = async (
+  customerEmail: string,
+  customerFirstName: string,
+  customerLastName: string,
+  customerPhone: string,
+
+  customerCountry: string,
+  customerAddress: string,
+  customerCity: string,
+  customerPostal: string,
+
+  paymentMethod: string,
+  cardNumber: string,
+  cardCSV: string,
+  appuser_id: Number | undefined,
+  status: string,
+
+  guitars: String,
+
+  tax: Number,
+  shipping: Number,
+  total: Number
+) => {
+  try {
+    const response = await fetch(`${HOST}:${PORT}/api/public/order/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        customerEmail: customerEmail,
+        customerFirstName: customerFirstName,
+        customerLastName: customerLastName,
+        customerPhone: customerPhone,
+
+        customerCountry: customerCountry,
+        customerAddress: customerAddress,
+        customerCity: customerCity,
+        customerPostal: customerPostal,
+
+        paymentMethod: paymentMethod,
+        cardNumber: cardNumber,
+        cardCSV: cardCSV,
+        appuser_id: appuser_id,
+        status: status,
+        guitarList: guitars,
+
+        tax: tax,
+        shipping: shipping,
+        total: total,
+      }),
+    });
+
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getOrdersByAppuserID = async (appuserID: Number) => {
+  console.log(appuserID);
+
+  const response = await fetch(
+    `${HOST}:${PORT}/api/public/order/getOrdersByAppuserID?appuserID=${appuserID}`
+  );
+
+  const data = await response.json();
+
+  return data;
+};

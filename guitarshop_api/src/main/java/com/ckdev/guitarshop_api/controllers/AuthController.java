@@ -16,20 +16,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/public/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthServiceImpl authService;
 
-    @PostMapping("/register")
+    @PostMapping("/api/public/auth/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/api/public/auth/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ) {

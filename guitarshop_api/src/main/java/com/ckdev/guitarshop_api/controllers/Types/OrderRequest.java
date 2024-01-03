@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,5 +32,11 @@ public class OrderRequest {
     private Integer appuser_id;
 
     private String status;
+
+    private String guitarList;
+
+    private Double tax;
+    private Double shipping;
+    private Double total;
 
 }

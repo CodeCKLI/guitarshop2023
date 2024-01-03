@@ -2,14 +2,9 @@ package com.ckdev.guitarshop_api.models.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.Optional;
 
 @Data
 @Builder
@@ -40,10 +35,15 @@ public class OrderEntity {
     @Column(columnDefinition = "varchar(255) default 'penning'")
     private String status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "appuser_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+    @ManyToOne
+    @ToString.Exclude
     private AppUserEntity appuser;
+
+    @Column(columnDefinition="text")
+    private String guitarList;
+
+    private Double tax;
+    private Double shipping;
+    private Double total;
 
 }

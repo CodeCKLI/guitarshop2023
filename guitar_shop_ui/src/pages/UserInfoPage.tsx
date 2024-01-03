@@ -12,6 +12,14 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
 // Icons
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -21,10 +29,19 @@ import { useNavigate } from "react-router-dom";
 // React cookie
 import { useCookies } from "react-cookie";
 
+import { WishListCard } from "../components/WishListCard";
+
+import { getOrdersByAppuserID } from "../helpers/DBHelpers";
+
 export const UserInfoPage = () => {
   const [tabs, setTabs] = useState("info");
 
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt", "isLoggedIn"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "jwt",
+    "isLoggedIn",
+    "userID",
+    "userName",
+  ]);
 
   const navigate = useNavigate();
 
@@ -115,6 +132,8 @@ export const UserInfoPage = () => {
                     onClick={() => {
                       removeCookie("jwt");
                       removeCookie("isLoggedIn");
+                      removeCookie("userID");
+                      removeCookie("userName");
 
                       setIsNavLoggedIn(false);
 
@@ -140,6 +159,21 @@ export const UserInfoPage = () => {
 };
 
 const UserInfoPaper = () => {
+  const [userName, setUserName] = useState("");
+  const [userID, setUserID] = useState("");
+
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "jwt",
+    "isLoggedIn",
+    "userName",
+    "userID",
+  ]);
+
+  useEffect(() => {
+    setUserID(cookies.userID);
+    setUserName(cookies.userName);
+  }, []);
+
   return (
     <Stack
       direction={"column"}
@@ -176,10 +210,24 @@ const UserInfoPaper = () => {
             }}
           >
             <TextField
+              id="user_ID"
+              label="User ID"
+              name="user_id"
+              variant="outlined"
+              value={userID}
+              fullWidth
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                console.log(e);
+              }}
+            />
+            <TextField
               id="user_name"
               label="User Name"
               name="user_name"
               variant="outlined"
+              value={userName}
               fullWidth
               onChange={(
                 e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -187,30 +235,7 @@ const UserInfoPaper = () => {
                 console.log(e);
               }}
             />
-            <TextField
-              id="full_name"
-              label="Full Name"
-              name="full_name"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <TextField
-              id="email"
-              label="Email Address"
-              name="email"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
+
             <Button variant="contained" fullWidth>
               Save
             </Button>
@@ -222,6 +247,25 @@ const UserInfoPaper = () => {
 };
 
 const OrderHistoryPaper = () => {
+  const [orders, setOrders] = useState([]);
+
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "jwt",
+    "isLoggedIn",
+    "userName",
+    "userID",
+  ]);
+
+  const retrieveOrders = async () => {
+    const result = await getOrdersByAppuserID(cookies.userID);
+    console.log(result);
+    setOrders(result);
+  };
+
+  useEffect(() => {
+    retrieveOrders();
+  }, []);
+
   return (
     <Stack
       direction={"column"}
@@ -246,7 +290,6 @@ const OrderHistoryPaper = () => {
             <SettingsIcon color="secondary" sx={{ marginRight: 1 }} />
             <Typography>{"Order History"}</Typography>
           </Stack>
-
           <Stack
             sx={{
               direction: "colum",
@@ -254,48 +297,73 @@ const OrderHistoryPaper = () => {
               alignItems: "center",
               gap: "1rem",
               py: 4,
-              width: "80%",
+              width: "90%",
             }}
           >
-            <TextField
-              id="user_name"
-              label="User Name"
-              name="user_name"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <TextField
-              id="full_name"
-              label="Full Name"
-              name="full_name"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <TextField
-              id="email"
-              label="Email Address"
-              name="email"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <Button variant="contained" fullWidth>
-              Save
-            </Button>
+            <Stack
+              direction={"row"}
+              justifyContent={"space-between"}
+              width={"100%"}
+            >
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 600 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Order ID</TableCell>
+                      <TableCell align="right">Payment</TableCell>
+                      <TableCell align="right">Status</TableCell>
+                      <TableCell align="right">Total</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {orders.map((orders: any) => (
+                      <TableRow
+                        key={orders.id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {orders.id}
+                        </TableCell>
+                        <TableCell align="right">
+                          {orders.paymentMethod}
+                        </TableCell>
+                        <TableCell align="right">{orders.status}</TableCell>
+                        <TableCell align="right">{orders.total}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+              {/* <Stack direction={"row"} spacing={2}>
+                <Typography variant="h6">id</Typography>
+                <Typography variant="h6">Payment</Typography>
+                <Typography variant="h6">Status</Typography>
+              </Stack> */}
+
+              {/* <Typography variant="h6">Total</Typography> */}
+            </Stack>
+
+            {/* {orders.map((order: any) => {
+              return (
+                <Stack
+                  key={order.id}
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  width={"100%"}
+                >
+                  <Stack direction={"row"} spacing={2}>
+                    <Typography>{order.id}</Typography>
+                    <Typography>{order.paymentMethod}</Typography>
+                    <Typography>{order.status}</Typography>
+                  </Stack>
+
+                  <Typography>{order.total}</Typography>
+                </Stack>
+              );
+            })} */}
           </Stack>
         </Stack>
       </Paper>
@@ -304,6 +372,19 @@ const OrderHistoryPaper = () => {
 };
 
 const WishListPaper = () => {
+  const [guitarsWish, setGuitarsWish] = useState([]);
+
+  useEffect(() => {
+    const wishItems = localStorage.getItem("wishItems");
+
+    if (wishItems != null) {
+      const wishItemArr = JSON.parse(wishItems);
+      console.log(wishItemArr);
+
+      setGuitarsWish(wishItemArr);
+    }
+  }, []);
+
   return (
     <Stack
       direction={"column"}
@@ -313,7 +394,7 @@ const WishListPaper = () => {
       }}
       spacing={3}
     >
-      {/* Order History */}
+      {/* WishList */}
       <Paper elevation={5}>
         <Stack
           sx={{
@@ -324,11 +405,6 @@ const WishListPaper = () => {
             width: "100%",
           }}
         >
-          <Stack sx={{ display: "flex", flexDirection: "row", width: "80%" }}>
-            <SettingsIcon color="secondary" sx={{ marginRight: 1 }} />
-            <Typography>{"Wish List"}</Typography>
-          </Stack>
-
           <Stack
             sx={{
               direction: "colum",
@@ -339,45 +415,29 @@ const WishListPaper = () => {
               width: "80%",
             }}
           >
-            <TextField
-              id="user_name"
-              label="User Name"
-              name="user_name"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <TextField
-              id="full_name"
-              label="Full Name"
-              name="full_name"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <TextField
-              id="email"
-              label="Email Address"
-              name="email"
-              variant="outlined"
-              fullWidth
-              onChange={(
-                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                console.log(e);
-              }}
-            />
-            <Button variant="contained" fullWidth>
-              Save
-            </Button>
+            <Stack
+              sx={{ display: "flex", flexDirection: "row", width: "100%" }}
+            >
+              <Typography variant="h5">{"Wish List"}</Typography>
+            </Stack>
+            <Grid paddingX={1} container>
+              {guitarsWish.length == 0 ? (
+                <Stack py={5}>
+                  <Typography variant="h6">No guitar is found</Typography>
+                </Stack>
+              ) : (
+                guitarsWish.map((guitar: any) => {
+                  return (
+                    <Grid item key={guitar.id} xs={12} md={6}>
+                      <WishListCard
+                        guitar={guitar}
+                        setGuitarsWish={setGuitarsWish}
+                      ></WishListCard>
+                    </Grid>
+                  );
+                })
+              )}
+            </Grid>
           </Stack>
         </Stack>
       </Paper>

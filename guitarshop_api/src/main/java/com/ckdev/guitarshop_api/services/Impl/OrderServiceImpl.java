@@ -11,6 +11,7 @@ import com.ckdev.guitarshop_api.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,7 +25,36 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResponse creatOrder(OrderRequest orderToCreate){
 
-        AppUserEntity foundUser = appUserRepo.findById(orderToCreate.getAppuser_id()).orElse(null);
+        if(orderToCreate.getAppuser_id() != null){
+            AppUserEntity foundUser = appUserRepo.findById(orderToCreate.getAppuser_id()).orElse(null);
+
+            var order = OrderEntity.builder()
+                    .customerEmail(orderToCreate.getCustomerEmail())
+                    .customerFirstName(orderToCreate.getCustomerFirstName())
+                    .customerLastName(orderToCreate.getCustomerLastName())
+                    .customerPhone(orderToCreate.getCustomerPhone())
+                    .customerCountry(orderToCreate.getCustomerCountry())
+                    .customerAddress(orderToCreate.getCustomerAddress())
+                    .customerCity(orderToCreate.getCustomerCity())
+                    .customerPostal(orderToCreate.getCustomerPostal())
+                    .paymentMethod(orderToCreate.getPaymentMethod())
+                    .cardNumber(orderToCreate.getCardNumber())
+                    .cardCSV(orderToCreate.getCardCSV())
+                    .appuser(foundUser)
+                    .status(orderToCreate.getStatus())
+                    .guitarList(orderToCreate.getGuitarList())
+                    .tax(orderToCreate.getTax())
+                    .shipping(orderToCreate.getShipping())
+                    .total(orderToCreate.getTotal())
+                    .build();
+
+            OrderEntity savedOrder = orderRepo.save(order);
+
+            return OrderResponse.builder()
+                    .isSuccess(true)
+                    .orderID(savedOrder.getId())
+                    .build();
+        }
 
         var order = OrderEntity.builder()
                 .customerEmail(orderToCreate.getCustomerEmail())
@@ -38,12 +68,21 @@ public class OrderServiceImpl implements OrderService {
                 .paymentMethod(orderToCreate.getPaymentMethod())
                 .cardNumber(orderToCreate.getCardNumber())
                 .cardCSV(orderToCreate.getCardCSV())
-                .appuser(foundUser)
+                .appuser(null)
                 .status(orderToCreate.getStatus())
+                .guitarList(orderToCreate.getGuitarList())
+                .tax(orderToCreate.getTax())
+                .shipping(orderToCreate.getShipping())
+                .total(orderToCreate.getTotal())
                 .build();
 
-        orderRepo.save(order);
-        return OrderResponse.builder().isSuccess(true).build();
+        OrderEntity savedOrder = orderRepo.save(order);
+
+        return OrderResponse.builder()
+                .isSuccess(true)
+                .orderID(savedOrder.getId())
+                .build();
+
 
     }
 
@@ -53,7 +92,37 @@ public class OrderServiceImpl implements OrderService {
 
         if(Objects.equals(foundOrder.getId(), orderToUpdate.getId())){
 
-            AppUserEntity foundUser = appUserRepo.findById(orderToUpdate.getAppuser_id()).orElse(null);
+            if(orderToUpdate.getAppuser_id() != null){
+                AppUserEntity foundUser = appUserRepo.findById(orderToUpdate.getAppuser_id()).orElse(null);
+
+                var order = OrderEntity.builder()
+                        .id(orderToUpdate.getId())
+                        .customerEmail(orderToUpdate.getCustomerEmail())
+                        .customerFirstName(orderToUpdate.getCustomerFirstName())
+                        .customerLastName(orderToUpdate.getCustomerLastName())
+                        .customerPhone(orderToUpdate.getCustomerPhone())
+                        .customerCountry(orderToUpdate.getCustomerCountry())
+                        .customerAddress(orderToUpdate.getCustomerAddress())
+                        .customerCity(orderToUpdate.getCustomerCity())
+                        .customerPostal(orderToUpdate.getCustomerPostal())
+                        .paymentMethod(orderToUpdate.getPaymentMethod())
+                        .cardNumber(orderToUpdate.getCardNumber())
+                        .cardCSV(orderToUpdate.getCardCSV())
+                        .appuser(foundUser)
+                        .status(orderToUpdate.getStatus())
+                        .guitarList(orderToUpdate.getGuitarList())
+                        .tax(orderToUpdate.getTax())
+                        .shipping(orderToUpdate.getShipping())
+                        .total(orderToUpdate.getTotal())
+                        .build();
+
+                OrderEntity savedOrder = orderRepo.save(order);
+
+                return OrderResponse.builder()
+                        .isSuccess(true)
+                        .orderID(savedOrder.getId())
+                        .build();
+            }
 
             var order = OrderEntity.builder()
                     .id(orderToUpdate.getId())
@@ -68,15 +137,37 @@ public class OrderServiceImpl implements OrderService {
                     .paymentMethod(orderToUpdate.getPaymentMethod())
                     .cardNumber(orderToUpdate.getCardNumber())
                     .cardCSV(orderToUpdate.getCardCSV())
-                    .appuser(foundUser)
+                    .appuser(null)
                     .status(orderToUpdate.getStatus())
+                    .guitarList(orderToUpdate.getGuitarList())
+                    .tax(orderToUpdate.getTax())
+                    .shipping(orderToUpdate.getShipping())
+                    .total(orderToUpdate.getTotal())
                     .build();
 
-            orderRepo.save(order);
-            return OrderResponse.builder().isSuccess(true).build();
+            OrderEntity savedOrder = orderRepo.save(order);
+
+            return OrderResponse.builder()
+                    .isSuccess(true)
+                    .orderID(savedOrder.getId())
+                    .build();
         }
 
-        return OrderResponse.builder().isSuccess(false).build();
+        return OrderResponse.builder()
+                .isSuccess(false)
+                .orderID(null)
+                .build();
     }
+
+    @Override
+    public List<OrderEntity> findAllOrders() {
+        return orderRepo.findAll();
+    }
+
+    @Override
+    public List<OrderEntity> findOrderByAppuser_id(Integer appuserID) {
+        return orderRepo.findByAppuser_id(appuserID);
+    }
+
 
 }

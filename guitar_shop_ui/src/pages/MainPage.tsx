@@ -17,7 +17,9 @@ export const MainPage = () => {
     if (sumCartItems != null) {
       const numOfCarItems = JSON.parse(sumCartItems);
       setCartItemNumber(numOfCarItems.length);
+      return;
     }
+    setCartItemNumber(0);
   };
 
   return (

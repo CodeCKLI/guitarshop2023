@@ -1,9 +1,19 @@
 package com.ckdev.guitarshop_api.models.DTOs;
 
+import com.ckdev.guitarshop_api.models.Entities.GuitarEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,4 +38,5 @@ public class OrderDTO {
     private String cardCSV;
 
     private Integer appuser_id;
+
 }

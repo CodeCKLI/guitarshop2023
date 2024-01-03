@@ -9,7 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -27,8 +29,8 @@ public class AppUserEntity implements UserDetails {
     private String email;
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appuser", cascade = CascadeType.ALL)
-    private List<OrderEntity> orderList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appuser")
+    private Set<OrderEntity> orders = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -22,7 +22,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 // Helper
-import { saveObj } from "../helpers/SessionHelpers";
+import { saveObj, saveLocalObj } from "../helpers/SessionHelpers";
 
 type guitarProp = {
   id: number;
@@ -41,6 +41,7 @@ export const DetailPage = () => {
   const [guitarData, setGuitarData] = useState<guitarProp>();
   const [guitarPictures, setGuitarPictures] = useState([]);
   const [diffColor, setDiffColor] = useState([]);
+  const [dialogText, setDialogText] = useState("");
 
   const [open, setOpen] = useState(false);
 
@@ -64,6 +65,9 @@ export const DetailPage = () => {
       console.log(`guitarId: ${guitarId}`);
 
       const data = await findGuitarByID(guitarId);
+
+      console.log(data);
+
       setGuitarData(data);
       setGuitarPictures(data.pictures);
 
@@ -116,6 +120,27 @@ export const DetailPage = () => {
 
     updateCartNumber();
 
+    setDialogText("cart");
+
+    setOpen(true);
+  };
+
+  const handleAddWish = () => {
+    const wishItem = {
+      id: guitarData?.id,
+      model: guitarData?.model,
+      bodyColor: guitarData?.bodyColor,
+      price: guitarData?.price,
+      coverURL: guitarData?.cover_URL,
+      brand: guitarData?.brand,
+    };
+
+    console.log(wishItem);
+
+    saveLocalObj("wishItems", wishItem);
+
+    setDialogText("Wish List");
+
     setOpen(true);
   };
 
@@ -151,9 +176,7 @@ export const DetailPage = () => {
                         }}
                       >
                         <Box
-                          onClick={(e) => {
-                            console.log(e.target);
-                          }}
+                          onClick={(e) => {}}
                           component="img"
                           sx={{
                             maxHeight: 300,
@@ -171,7 +194,7 @@ export const DetailPage = () => {
             <Dialog open={open} onClose={handleClose}>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  Item has been added to cart
+                  Item has been added to {dialogText}
                 </DialogContentText>
               </DialogContent>
               <Stack direction={"row"} justifyContent={"center"}>
@@ -216,9 +239,23 @@ export const DetailPage = () => {
                   })}
                 </Stack>
 
-                <Button onClick={handleAddBagBTN} variant="contained" fullWidth>
-                  Add to Bag
-                </Button>
+                <Stack direction={"row"} spacing={2}>
+                  <Button
+                    onClick={handleAddBagBTN}
+                    sx={{ width: "50%" }}
+                    variant="contained"
+                  >
+                    Add to Bag
+                  </Button>
+                  <Button
+                    sx={{ width: "50%" }}
+                    onClick={handleAddWish}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Wish List
+                  </Button>
+                </Stack>
 
                 <Button variant="contained" href="/shop">
                   Back to shop

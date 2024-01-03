@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import { CartItemContext } from "../pages/MainPage";
 
@@ -10,7 +10,6 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -20,23 +19,12 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+
 // React Router
 import { Link } from "react-router-dom";
 
-// Helper
-import { saveObj, saveLocalObj } from "../helpers/SessionHelpers";
-
-type guitarType = {
-  id: number;
-  brand: string;
-  description: string;
-  price: number;
-  model: string;
-  cover_URL: string;
-  bodyColor: string;
-};
-
-export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
+export const WishListCard = ({ guitar, setGuitarsWish }: any) => {
   const [open, setOpen] = useState(false);
 
   const [dialogText, setDialogText] = useState("");
@@ -52,42 +40,21 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
     setOpen(false);
   };
 
-  const handleAddBagBTN = () => {
-    const CartItem = {
-      id: guitar?.id,
-      model: guitar?.model,
-      bodyColor: guitar?.bodyColor,
-      amount: 1,
-      price: guitar?.price,
-      coverURL: guitar?.cover_URL,
-      brand: guitar?.brand,
-    };
-    saveObj("cartItems", CartItem);
+  const handleRemoveWish = () => {
+    const result = localStorage.getItem("wishItems");
 
-    setDialogText("Cart");
+    if (result != null) {
+      const wishItemsArr = JSON.parse(result);
 
-    updateCartNumber();
+      const removedList = wishItemsArr.filter(
+        (item: any) => item.id !== guitar.id
+      );
+      console.log(removedList);
 
-    setOpen(true);
-  };
+      localStorage.setItem("wishItems", JSON.stringify(removedList));
 
-  const handleAddWish = () => {
-    const wishItem = {
-      id: guitar?.id,
-      model: guitar?.model,
-      bodyColor: guitar?.bodyColor,
-      price: guitar?.price,
-      coverURL: guitar?.cover_URL,
-      brand: guitar?.brand,
-    };
-
-    console.log(wishItem);
-
-    saveLocalObj("wishItems", wishItem);
-
-    setDialogText("Wish List");
-
-    setOpen(true);
+      setGuitarsWish(removedList);
+    }
   };
 
   return (
@@ -97,11 +64,8 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
           <CardHeader
             action={
               <Box>
-                <IconButton onClick={handleAddWish}>
-                  <FavoriteIcon />
-                </IconButton>
-                <IconButton onClick={handleAddBagBTN}>
-                  <AddShoppingCartIcon />
+                <IconButton onClick={handleRemoveWish}>
+                  <DeleteIcon />
                 </IconButton>
               </Box>
             }
@@ -112,7 +76,7 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
           <CardMedia
             sx={{ height: "300px", paddingX: 2 }}
             component={"img"}
-            image={guitar.cover_URL}
+            image={guitar.coverURL}
           ></CardMedia>
 
           <CardContent>

@@ -2,8 +2,10 @@ package com.ckdev.guitarshop_api;
 
 import com.ckdev.guitarshop_api.models.Entities.AppUserEntity;
 import com.ckdev.guitarshop_api.models.Entities.GuitarEntity;
+import com.ckdev.guitarshop_api.models.Entities.OrderEntity;
 import com.ckdev.guitarshop_api.repositories.AppUserRepo;
 import com.ckdev.guitarshop_api.repositories.GuitarRepo;
+import com.ckdev.guitarshop_api.repositories.OrderRepo;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,12 +22,18 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 	private final DataSource dataSource;
 	private final GuitarRepo guitarRepoObj;
 	private final AppUserRepo appuserRepoObj;
+	private final OrderRepo orderRepoObj;
 
 
-    public GuitarshopApiApplication(DataSource dataSource, GuitarRepo guitarRepo, AppUserRepo appuserRepo) {
+    public GuitarshopApiApplication(DataSource dataSource,
+									GuitarRepo guitarRepo,
+									AppUserRepo appuserRepo,
+									OrderRepo orderRepo
+									) {
         this.dataSource = dataSource;
 		this.guitarRepoObj = guitarRepo;
 		this.appuserRepoObj = appuserRepo;
+		this.orderRepoObj = orderRepo;
     }
 
     public static void main(String[] args) {
@@ -88,11 +96,32 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 				.build();
 
 		AppUserEntity appuserOne = AppUserEntity.builder()
-				.email("test@email.com")
-				.firstname("Test")
-				.lastname("Testing")
-				.password("abc")
+				.email("matt@matt.com")
+				.firstname("Matt")
+				.lastname("Li")
+				.password("$2a$10$PbgBAHBchabk0Z3Rkib7XOI8c2ELKaiJ6EqIpHWkvaKa1VREqmFyW")
 				.build();
+
+		OrderEntity orderOne = OrderEntity.builder()
+				.customerEmail("testing@email.com")
+				.customerFirstName("TestingFirst")
+				.customerLastName("TestingLast")
+				.customerPhone("6661234321")
+				.customerCountry("USA")
+				.customerAddress("123 ABC Dr")
+				.customerCity("NYC")
+				.customerPostal("123321")
+				.paymentMethod("visa")
+				.cardNumber("4242 4242 4242 4242")
+				.cardCSV("242")
+				.appuser(null)
+				.status("Penning")
+				.guitarList("[{\"id\":2,\"model\":\"SG Classic Worn P-90s\",\"bodyColor\":\"red\",\"amount\":4,\"price\":429.99,\"coverURL\":\"src/assets/guitarpics/epiphonesgred.png\",\"brand\":\"Epiphone\"},{\"id\":4,\"model\":\"SG Classic Worn P-90s\",\"bodyColor\":\"green\",\"amount\":4,\"price\":429.99,\"coverURL\":\"src/assets/guitarpics/epiphonesggreen.png\",\"brand\":\"Epiphone\"},{\"id\":3,\"model\":\"RG8870\",\"bodyColor\":\"grey\",\"amount\":1,\"price\":1299.79,\"coverURL\":\"src/assets/guitarpics/ibanezrg.png\",\"brand\":\"Ibanez\"}]")
+				.tax(123.00)
+				.shipping(5.00)
+				.total(1234.00)
+				.build();
+
 
 		guitarRepoObj.save(guitarA);
 		guitarRepoObj.save(guitarB);
@@ -100,6 +129,8 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 		guitarRepoObj.save(guitarD);
 
 		appuserRepoObj.save(appuserOne);
+
+//		orderRepoObj.save(orderOne);
 
 
 	}

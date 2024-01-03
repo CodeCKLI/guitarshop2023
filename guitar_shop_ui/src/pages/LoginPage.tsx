@@ -40,6 +40,7 @@ export const LoginPage = () => {
     "jwt",
     "isLoggedIn",
     "userName",
+    "userID",
   ]);
 
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ export const LoginPage = () => {
       setCookie("isLoggedIn", true);
       setCookie("jwt", result.access_token);
       setCookie("userName", result.userName);
+      setCookie("userID", result.userID);
 
       setIsNavLoggedIn(true);
     } else {
@@ -86,6 +88,7 @@ export const LoginPage = () => {
       setCookie("isLoggedIn", true);
       setCookie("jwt", result.access_token);
       setCookie("userName", result.userName);
+      setCookie("userID", result.userID);
 
       setIsNavLoggedIn(true);
 

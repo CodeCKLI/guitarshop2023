@@ -28,7 +28,6 @@ import { Link } from "react-router-dom";
 
 // React cookie
 import { useCookies } from "react-cookie";
-import { Cookie } from "@mui/icons-material";
 
 const pages = ["Shop", "About"];
 

@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface OrderRepo extends JpaRepository<OrderEntity, Long> {
 
+    List<OrderEntity> findByAppuser_id(Integer appuser_id);
+
 
 }
