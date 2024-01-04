@@ -125,7 +125,7 @@ export const CartPage = () => {
                                 getGuitars();
                               }}
                             >
-                              {[...Array(10)].map((i) => (
+                              {[...Array(10)].map((e, i) => (
                                 <MenuItem key={i} value={i + 1}>
                                   {i + 1}
                                 </MenuItem>
