@@ -34,11 +34,7 @@ const pages = ["Shop", "About"];
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "jwt",
-    "isLoggedIn",
-    "userName",
-  ]);
+  const [cookies] = useCookies(["jwt", "isLoggedIn", "userName"]);
 
   const {
     cartItemNumber,

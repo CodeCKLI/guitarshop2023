@@ -37,7 +37,7 @@ export const CheckOutPage = () => {
   const [total, setTotal]: any = useState(0);
   const [tax, setTax] = useState(0);
   const [dialogText, setDialogText] = useState("");
-  const [shipping, setShipping] = useState(5.0);
+  const [shipping] = useState(5.0);
 
   const [isShowInfo, setIsShowInfo] = useState("flex");
   const [isShowShip, setIsShowShip] = useState("none");
@@ -66,22 +66,11 @@ export const CheckOutPage = () => {
 
   const { isNavLoggedIn }: { isNavLoggedIn: any } = useContext(NavLogInContext);
   const {
-    cartItemNumber,
-    setCartItemNumber,
     updateCartNumber,
   }: { cartItemNumber: any; setCartItemNumber: any; updateCartNumber: any } =
     useContext(CartItemContext);
 
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "jwt",
-    "isLoggedIn",
-    "userName",
-    "userID",
-  ]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [cookies] = useCookies(["jwt", "isLoggedIn", "userName", "userID"]);
 
   const handleClose = () => {
     setOpen(false);

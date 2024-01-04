@@ -44,10 +44,6 @@ export const ItemCard = ({ guitar }: { guitar: guitarType }) => {
   const { updateCartNumber }: { updateCartNumber: any } =
     useContext(CartItemContext);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };

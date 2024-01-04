@@ -91,7 +91,6 @@ export const CartPage = () => {
                       alignSelf={"center"}
                     >
                       <Box
-                        onClick={(e) => {}}
                         component="img"
                         sx={{ maxWidth: 150 }}
                         src={guitar?.coverURL}
@@ -115,7 +114,7 @@ export const CartPage = () => {
                               value={String(guitar?.amount)}
                               label="Qty"
                               onChange={(e: any) => {
-                                const found = guitars.filter((item: any) => {
+                                guitars.filter((item: any) => {
                                   if (item.id == guitar.id) {
                                     return (item.amount = e.target.value);
                                   }
@@ -126,7 +125,7 @@ export const CartPage = () => {
                                 getGuitars();
                               }}
                             >
-                              {[...Array(10)].map((e, i) => (
+                              {[...Array(10)].map((i) => (
                                 <MenuItem key={i} value={i + 1}>
                                   {i + 1}
                                 </MenuItem>

@@ -302,6 +302,7 @@ export const ShopPage = () => {
                     value: number
                   ) => {
                     setPage(value);
+                    console.log(event);
                     getAllGuitars(
                       value,
                       isSort,

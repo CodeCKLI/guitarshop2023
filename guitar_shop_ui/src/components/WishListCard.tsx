@@ -1,6 +1,4 @@
-import { useState, useContext, useEffect } from "react";
-
-import { CartItemContext } from "../pages/MainPage";
+import { useState } from "react";
 
 // MUI
 import Card from "@mui/material/Card";
@@ -9,7 +7,6 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -27,14 +24,7 @@ import { Link } from "react-router-dom";
 export const WishListCard = ({ guitar, setGuitarsWish }: any) => {
   const [open, setOpen] = useState(false);
 
-  const [dialogText, setDialogText] = useState("");
-
-  const { updateCartNumber }: { updateCartNumber: any } =
-    useContext(CartItemContext);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [dialogText] = useState("");
 
   const handleClose = () => {
     setOpen(false);

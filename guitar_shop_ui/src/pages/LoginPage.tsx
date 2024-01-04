@@ -36,7 +36,7 @@ export const LoginPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [cookies, setCookie, removeCookie] = useCookies([
+  const [cookies, setCookie] = useCookies([
     "jwt",
     "isLoggedIn",
     "userName",
@@ -53,7 +53,7 @@ export const LoginPage = () => {
     setLoading(true);
 
     const result = await userSignin(firstName, lastName, email, password);
-    console.log(result);
+    console.log(cookies.isLoggedIn);
 
     setLoading(false);
 

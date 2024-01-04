@@ -55,6 +55,9 @@ export const UserInfoPage = () => {
     if (!isNavLoggedIn) {
       navigate("/");
     }
+
+    console.log(setCookie);
+    console.log(cookies);
   }, []);
 
   return (
@@ -162,12 +165,7 @@ const UserInfoPaper = () => {
   const [userName, setUserName] = useState("");
   const [userID, setUserID] = useState("");
 
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "jwt",
-    "isLoggedIn",
-    "userName",
-    "userID",
-  ]);
+  const [cookies] = useCookies(["jwt", "isLoggedIn", "userName", "userID"]);
 
   useEffect(() => {
     setUserID(cookies.userID);
@@ -249,12 +247,7 @@ const UserInfoPaper = () => {
 const OrderHistoryPaper = () => {
   const [orders, setOrders] = useState([]);
 
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "jwt",
-    "isLoggedIn",
-    "userName",
-    "userID",
-  ]);
+  const [cookies] = useCookies(["jwt", "isLoggedIn", "userName", "userID"]);
 
   const retrieveOrders = async () => {
     const result = await getOrdersByAppuserID(cookies.userID);

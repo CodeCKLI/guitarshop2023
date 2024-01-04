@@ -19,7 +19,6 @@ import { findGuitarByID, findGuitarByModel } from "../helpers/DBHelpers";
 
 // React router
 import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 // Helper
 import { saveObj, saveLocalObj } from "../helpers/SessionHelpers";
@@ -51,9 +50,6 @@ export const DetailPage = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  // Navigate
-  const navigate = useNavigate();
 
   const location = useLocation();
 
@@ -176,7 +172,6 @@ export const DetailPage = () => {
                         }}
                       >
                         <Box
-                          onClick={(e) => {}}
                           component="img"
                           sx={{
                             maxHeight: 300,

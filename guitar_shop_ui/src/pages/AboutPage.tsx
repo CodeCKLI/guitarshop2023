@@ -1,5 +1,3 @@
-import React from "react";
-
 // MUI
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
