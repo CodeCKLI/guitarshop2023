@@ -47,12 +47,12 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 				.model("70TH ANNIVERSARY PLAYER STRATOCASTER®")
 				.brand("Fender")
 				.description("Celebrate 70 years of Fender Stratocaster excellence with the 70th Anniversary Collection. From vintage charm to modern innovation, each model offers iconic style, rich tones, and limited availability.")
-				.cover_URL("src/assets/fender70strat.jpg")
+				.cover_URL("/guitarPics/fender70strat.jpg")
 				.price(799.99)
 				.colorOptions(Arrays.asList("black"))
-				.pictures(Arrays.asList("src/assets/fender70strats1.jpg",
-						"src/assets/fender70strats2.jpg",
-						"src/assets/fender70strats3.jpg"))
+				.pictures(Arrays.asList("/guitarPics/fender70strats1.jpg",
+						"/guitarPics/fender70strats2.jpg",
+						"/guitarPics/fender70strats3.jpg"))
 				.bodyColor("black")
 				.build();
 
@@ -60,12 +60,12 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 				.model("SG Classic Worn P-90s")
 				.brand("Epiphone")
 				.description("Epiphone's SG Classic Worn, part of the Inspired by Gibson™ Collection, features a  finish, P-90 PRO™ pickups, and comes in Worn Cherry and Worn Inverness Green.")
-				.cover_URL("src/assets/epiphonesgred.png")
+				.cover_URL("/guitarPics/epiphonesgred.png")
 				.price(429.99)
 				.colorOptions(Arrays.asList("red", "green"))
-				.pictures(Arrays.asList("src/assets/epiphonesgred1.png",
-						"src/assets/epiphonesgred2.png",
-						"src/assets/epiphonesgred3.png"))
+				.pictures(Arrays.asList("/guitarPics/epiphonesgred1.png",
+						"/guitarPics/epiphonesgred2.png",
+						"/guitarPics/epiphonesgred3.png"))
 				.bodyColor("red")
 				.build();
 
@@ -73,12 +73,12 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 				.model("SG Classic Worn P-90s")
 				.brand("Epiphone")
 				.description("Epiphone's SG Classic Worn, part of the Inspired by Gibson™ Collection, features a  finish, P-90 PRO™ pickups, and comes in Worn Cherry and Worn Inverness Green.")
-				.cover_URL("src/assets/epiphonesggreen.png")
+				.cover_URL("/guitarPics/epiphonesggreen.png")
 				.price(429.99)
 				.colorOptions(Arrays.asList("red", "green"))
-				.pictures(Arrays.asList("src/assets/epiphonesggreen1.png",
-						"src/assets/epiphonesggreen2.png",
-						"src/assets/epiphonesggreen3.png"))
+				.pictures(Arrays.asList("/guitarPics/epiphonesggreen1.png",
+						"/guitarPics/epiphonesggreen2.png",
+						"/guitarPics/epiphonesggreen3.png"))
 				.bodyColor("green")
 				.build();
 
@@ -86,12 +86,12 @@ public class GuitarshopApiApplication implements CommandLineRunner {
 				.model("RG8870")
 				.brand("Ibanez")
 				.description("Ibanez guitar boasts Super Wizard AS neck, j.custom design, Macassar Ebony fretboard, chambered body, DiMarzio pickups, Lo-Pro Edge tremolo, and versatile features.")
-				.cover_URL("src/assets/ibanezrg.png")
+				.cover_URL("/guitarPics/ibanezrg.png")
 				.price(1299.79)
 				.colorOptions(Arrays.asList("grey"))
-				.pictures(Arrays.asList("src/assets/ibanezrg1.png",
-						"src/assets/ibanezrg2.png",
-						"src/assets/ibanezrg3.png"))
+				.pictures(Arrays.asList("/guitarPics/ibanezrg1.png",
+						"/guitarPics/ibanezrg2.png",
+						"/guitarPics/ibanezrg3.png"))
 				.bodyColor("grey")
 				.build();
 
