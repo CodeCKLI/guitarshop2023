@@ -1,14 +1,11 @@
 const env = import.meta.env;
 
 let HOST: string;
-let PORT: string;
 
 if (env.VITE_REACT_APP_MDOE == "DEV") {
   HOST = env.VITE_REACT_APP_DEV_HOST;
-  PORT = env.VITE_REACT_APP_DEV_PORT;
 } else if (env.VITE_REACT_APP_MDOE == "PROD") {
   HOST = env.VITE_REACT_APP_PROD_HOST;
-  PORT = env.VITE_REACT_APP_PROD_PORT;
 }
 
 export const findAllGuitars = async (
@@ -21,7 +18,7 @@ export const findAllGuitars = async (
   price: string
 ) => {
   const response = await fetch(
-    `${HOST}:${PORT}/api/public/guitars?pageNo=${
+    `${HOST}/api/public/guitars?pageNo=${
       page - 1
     }&pageSize=10&isSort=${isSort}&sortBy=${sortBy}&dir=${sortOrder}&isFilter=${isFilter}&brand=${brand}&price=${price}`
   );
@@ -33,7 +30,7 @@ export const findAllGuitars = async (
 
 export const findGuitarByID = async (guitarID: number) => {
   const response = await fetch(
-    `${HOST}:${PORT}/api/public/guitar?guitarID=${guitarID}`
+    `${HOST}/api/public/guitar?guitarID=${guitarID}`
   );
   const data = await response.json();
   return data;
@@ -41,7 +38,7 @@ export const findGuitarByID = async (guitarID: number) => {
 
 export const findGuitarByModel = async (model: string) => {
   const response = await fetch(
-    `${HOST}:${PORT}/api/public/guitarbyModel?model=${model}`
+    `${HOST}/api/public/guitarbyModel?model=${model}`
   );
   const data = await response.json();
   return data;
@@ -49,19 +46,16 @@ export const findGuitarByModel = async (model: string) => {
 
 export const authenticateUser = async (email: string, password: string) => {
   try {
-    const response = await fetch(
-      `${HOST}:${PORT}/api/public/auth/authenticate`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      }
-    );
+    const response = await fetch(`${HOST}/api/public/auth/authenticate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
     const result = response.json();
     return result;
   } catch (error) {
@@ -76,7 +70,7 @@ export const userSignin = async (
   password: string
 ) => {
   try {
-    const response = await fetch(`${HOST}:${PORT}/api/public/auth/register`, {
+    const response = await fetch(`${HOST}/api/public/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +114,7 @@ export const ceateOrder = async (
   total: Number
 ) => {
   try {
-    const response = await fetch(`${HOST}:${PORT}/api/public/order/create`, {
+    const response = await fetch(`${HOST}/api/public/order/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -160,7 +154,7 @@ export const getOrdersByAppuserID = async (appuserID: Number) => {
   console.log(appuserID);
 
   const response = await fetch(
-    `${HOST}:${PORT}/api/public/order/getOrdersByAppuserID?appuserID=${appuserID}`
+    `${HOST}/api/public/order/getOrdersByAppuserID?appuserID=${appuserID}`
   );
 
   const data = await response.json();
